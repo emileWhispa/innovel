@@ -1,0 +1,23 @@
+<div id="wholeData">
+
+<div id="shower">
+
+</div>
+<section>
+	<div class="boxer"id="myScroll">
+
+@for( i <- Department.all()){
+	<div id="parser">
+		<a id="ha"href="@routes.Application.fetchPro(i.id)"onclick="return act.data(this)">@i.departmentName</a>
+		<div><img src="@routes.Assets.at("upload/"+i.departmentLogo)"></div>
+		<p>@i.departmentDetails</p>
+		<button class="button"onclick="this.parentNode.querySelector('a').click();">Explore</button>
+	</div>
+}
+	</div>
+	<div class="boxer"id="myScroll"></div>
+	<div class="boxer"id="myScroll"></div>
+</section>
+	</div>
+
+

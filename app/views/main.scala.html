@@ -1,0 +1,18 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="icon" href="@routes.Assets.at("images/logo.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/font-awesome.min.css")">
+        <script src="@routes.Assets.at("js/script.js")"></script>
+        <script src="@routes.Assets.at("js/object.js")"></script>
+        <noscript><META http-equiv="refresh" content="0;/error/javascript/"></noscript>
+    </head>
+    <body>
+        @content
+    </body>
+</html>

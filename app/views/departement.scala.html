@@ -1,0 +1,94 @@
+<style>
+
+</style>
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+	show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form ,function(res){
+	var liclick = document.querySelector(".active");
+	liclick.click();
+});
+
+
+</script>
+<div align="left"style="position:relative;z-index:5;">
+	<button class="button"id="batme"> <add>+</add> Add New Category</button>
+
+	<div id="madona">
+	<form class="loginForm"method="POST"action="@routes.Application.regDep()"id="formA">
+	<div id="h"><h1>Register</h1> new Category Here</div>
+	<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="depart"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter Department</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="details"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Detail</label>
+      </div>
+      <a href="#"id="forgot"onclick="this.querySelector('input').click()">
+      	<input type="file"name="photo"style="display:none;"onchange="change(this);">Add Department Logo?
+      	<span id="small"></span>
+      </a>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+<div id="table">
+
+<div id="tableHeader">List of All Available Categories</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>id</td>
+<td>Category Logo</td>
+<td>Category name</td>
+<td>Category Details</td>
+<td>Delete</td>
+<td>Update</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 1;var p = 1;
+
+
+@for( i <- Department.all()){
+	<tr>
+		<td>@x</td>
+		<td><span id="myImage"><img src="assets/upload/@i.departmentLogo"></span></td>
+		<td>@i.departmentName</td>
+		<td><div>@i.departmentDetails</div></td>
+		<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"dep")"></button></td>
+		<td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"dep")"></button></td>
+		@( x = x + 1 )
+	</tr>
+}
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

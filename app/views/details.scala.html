@@ -1,0 +1,95 @@
+<style>
+
+</style>
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+  show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form ,function(res){
+  var liclick = $(".active");
+  liclick.click();
+});
+</script>
+<div align="left"style="position:relative;z-index:5;">
+  <button class="button"id="batme"> <add>+</add> Add New Details</button>
+
+  <div id="madona">
+  <form class="loginForm"method="POST"action="@routes.Application.regDetails()"id="formA">
+  <div id="h"><h1>Detail</h1>adding place form</div>
+  <br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="names"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter Detail name</label>
+      </div>
+<br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="content"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Detail Content</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <select type="text" class="form-input" name="project"  id="X_Text">
+          <option value=""></option>
+          @for( i <- Projects.all() ){
+          <option value="@i.id">@i.projectName</option>
+        }
+        </select>
+        <label for="X_Text" class="animated-label">Choose Project Details</label>
+      </div>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+<div id="table">
+
+<div id="tableHeader">List of All Available Details</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>id</td>
+<td>Detail name</td>
+<td>Detail Content</td>
+<td>Project'Detail</td>
+<td>Delete</td>
+<td>Update</td>
+</thead>
+
+<tbody>
+
+@for( i <- Details.all()){
+  <tr>
+    <td>@i.id</td>
+    <td>@i.name</td>
+    <td><div>@i.content</div></td>
+    <td>@i.project.projectName</td>
+    <td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"det")"></button></td>
+    <td><button id="update"></button></td>
+  </tr>
+}
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

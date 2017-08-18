@@ -1,0 +1,76 @@
+<script>
+var form = document.querySelector(".loginForm");
+var allInput = form.querySelectorAll(".form-input");
+
+blurer(allInput);
+
+submiter( form );
+</script>
+<form class="loginForm"method="POST"action="@routes.Application.regUser()">
+	<div id="h"><h1>Register </h1>new user in system</div>
+	<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="username"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter Username</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="firstname"  id="O_Text"/>
+        <label for="O_Text" class="animated-label">Enter Firstname</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="lastname"  id="L_Text"/>
+        <label for="L_Text" class="animated-label">Enter Lastname</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <select class="form-input" name="day"  id="D_Text">
+        <option value="">_ _ _</option>
+        @for( i <- 1 to 31 ){
+        <option value="@i">@i</option>
+      }
+      </select>
+      <select class="form-input" name="month"  id="D_Text">
+        <option value="">_ _ _</option>
+        @for( i <- 1 to 12 ){
+        <option value="@i">@i</option>
+      }
+      </select>
+      <select class="form-input" name="year"  id="D_Text">
+        <option value="">_ _ _</option>
+        @for( i <- 1900 to 2017 ){
+        <option value="@i">@i</option>
+      }
+      </select>
+        <label for="D_Text" for="D_TXext" class="animated-label">Choose Birth Date</label>
+      </div>
+      <br/>
+      <div class="form-group">
+        <span></span>
+        <select class="form-input" name="utype"  id="T_Text">
+          <option value=""></option>
+          <option value="Developer">Developer</option>
+          <option value="Manager">Manager</option>
+          <option value="Administrator">Administrator</option>
+          <option value="Client">client</option>
+        </select>
+        <label for="T_Text" class="animated-label">Choose user type</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <input type="password" class="form-input" name="password"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Password</label>
+      </div>
+      <br/>
+      <div id="buttonHandle">
+        <a href="#"id="moreX">More Options</a><input type="submit"name="first"value="SIGN UP"id="meBut"/>
+      </div>
+
+</form>
+

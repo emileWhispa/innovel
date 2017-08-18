@@ -1,0 +1,108 @@
+@(user: Users)
+
+<style>
+
+</style>
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+  show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form );
+</script>
+<div align="left"style="position:relative;z-index:5;">
+  <button class="button"id="batme"> <add>+</add> Add New Sub Task</button>
+
+  <div id="madona">
+  <form class="loginForm"method="POST"action="@routes.Application.regsubTasks()"id="formA">
+  <div id="h"><img src="@routes.Assets.at("images/logo.png")"></div>
+  <br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="names"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter sub Task name</label>
+      </div>
+<br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="content"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Detail Content</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <select type="text" class="form-input" name="task"  id="X_Text">
+          <option value=""></option>
+          @for( i <- Tasks.finderByFk(user.id) ){
+          <option value="@i.id">@i.taskName</option>
+        }
+        </select>
+        <label for="X_Text" class="animated-label">Choose Task</label>
+      </div>
+      <a href="#"id="forgot"onclick="this.querySelector('input').click()">
+        <input type="file"name="photo"style="display:none;"onchange="change(this);">Add Department Logo?
+        <span id="small"></span>
+      </a>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+
+<div id="dataBox">
+
+
+<div class="navBox">
+  <div>
+@for( i <- Tasks.finderByFk(user.id) ){
+ <li><a href="@routes.Application.viewSubtasks(i.id)"onclick="return getData(this)">
+  @i.taskName (@i.proj.projectName) <label>View(SubTasks)</label></a></li>
+}
+</div>
+</div>
+
+<div id="myData">
+
+
+</div>
+
+</div>
+
+<style>
+#dataBox{height:500px;border:1px solid #ddd;margin:10px 0;position:relative;}
+.navBox{position:absolute;left:0;height:100%;width:26%;border-right:1px solid #ddd;}
+.navBox li{display:block;list-style:none;}
+.navBox li a{display:block;padding:10px;text-align:left;color:blue;font-family:arial;font-size:13.3px;text-decoration:none;
+border-bottom-width:1px;border-bottom-style: solid;border-top-width:1px;border-top-style: solid;
+border-top-color:transparent;border-bottom-color:transparent;}
+.navBox li a label{display:block;padding:7px 7px 0px 7px;font-weight:bolder;}
+.navBox li a:hover{background-color:#7996cd;border-bottom-color:#3f64a9;border-top-color:#3f64a9;color:#fff;}
+#myData{position:absolute;left:26%;top:0;width:74%;overflow-y:auto;}
+#myData li{display:block;list-style:none;padding:15px 0 15px 0;border-bottom:1px solid #ddd;font-family:arial;font-size:13.2px;
+  margin:3px;text-align:left;position:relative;}
+  #myData button{position:absolute;right:10px;top:10px;width:30px;height:30px;border:1px solid #ddd;
+    background:#ddd url(@routes.Assets.at("images/like.png")) no-repeat center;background-size: 30px;}
+.navBox div{padding:3px;}
+
+
+
+
+
+
+
+
+
+
+
+
+</style>

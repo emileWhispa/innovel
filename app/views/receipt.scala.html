@@ -1,0 +1,52 @@
+
+@(cash:Cashin)
+
+<html>
+<head>
+<title>Print Receipt</title>
+</head>
+
+<div class="receipt">
+
+<h3>Innovel Technologies Ltd</h3>
+
+<label>Address Line Here</label>
+
+<label>Phone : 078495453</label>
+<label>Email : @("innovel@in.co")</label>
+<label>website : www.innovel.com</label>
+
+<h3>Cash Receipt</h3>
+
+<span>Cash receipt # : @cash.id</span>
+
+
+<span id="dater">Date: @cash.date</span>
+<br/>
+<span>Cash Receipt FROM <input type="text"value="@cash.fromu"> : of Rwf <input type="text"value="@cash.amount"> <br/>For <input type="text"style="width:93%;"value="@cash.motif"></span>
+
+<span id="bold">Payment Received</span>
+
+<table>
+<tr><td>Cash</td><td col="1"></td></tr>
+<tr><td>Cheque</td><td col="1"></td></tr>
+<tr><td>Other</td><td col="1"></td></tr>
+</table>
+
+<span id="sign">signed by <input type="text"value="@cash.doneby.username @cash.doneby.firstName"></span>
+
+</div>
+
+<style>
+.receipt{width:470px;border:1px solid #ddd;padding:10px;min-height:300px;position:relative;text-align:center;
+	line-height:1.5 !important;font-family:arial;font-size:12px;color:#000 !important;}
+.receipt *{padding:0;}
+.receipt #dater{position:absolute;right:20px;margin-top:-17px;}
+.receipt label{display:block;text-align:center;}
+.receipt span{display:block;text-align:left;}
+.receipt td{font-size:12px;}.receipt #sign{position:absolute;right:20px;margin-top:-35px;}
+.receipt td[col]{border:1px solid #000;width:50px;border-collapse:collapse;}
+.receipt h3{padding:5px 0px 5px 0;margin:0px;font-family:arial;}
+.receipt #bold{font-weight:bold;padding:17px 0 12px 0;font-size:14px;}
+.receipt input{border:none;border-bottom:1px solid #ddd;outline:none;width:150px;padding-left:10px;font-weight:bolder;}
+</style>

@@ -1,0 +1,113 @@
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+  show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form );
+</script>
+<div align="left"style="position:relative;z-index:5;">
+  <button class="button"id="batme"> <add>+</add> Add New payed debit</button>
+
+  <div id="madona">
+  <form class="loginForm"method="POST"action="@routes.Application.savePayed()"id="formA">
+
+  <div id="h"><img src="@routes.Assets.at("images/logo.png")"></div>
+  <br/>
+   <div class="form-group">
+        <span></span>
+        <select class="form-input" name="debt"  id="F_Text"/>
+        <option value=""></option>
+        @for( i <- SentDebts.all() ){
+          <option value="@i.id">@i.sendto (@i.amount)</option>
+        }
+        </select>
+        <label for="F_Text" class="animated-label">Choose Debt</label>
+      </div>
+<br/>
+   <div class="form-group">
+        <span></span>
+        <input type="number" class="form-input" name="amount"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Payed Amount</label>
+      </div>
+<br/>
+   <div class="form-group">
+        <span></span>
+        <input type="date" class="form-input" name="date"  id="Da_Text"onfocus="this.value= new Date();"/>
+        <label for="Da_Text" class="animated-label">Date</label>
+      </div>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+<div id="table">
+
+<div id="tableHeader">Payed Debt</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>To</td>
+<td>Debt Amount</td>
+<td>Covered</td>
+<td>Rest</td>
+<td>Date</td>
+<td>Modify</td>
+<td>Delete</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 0;var p = 0;
+
+@for( ip <- SentDebts.all() ){
+
+@( x = 0 )
+
+@( p = 0 )
+
+
+@for( i <- Payed.finderByFk(ip.id) ){
+
+
+
+<tr>
+	<td>@i.sent.sendto</td>
+	<td>@if( x == 0 ){@i.sent.amount}else{@p}</td>
+  @if( x == 0 ){
+  @( p = i.sent.amount - i.amount )
+}else{
+  @( p = p - i.amount )
+}
+	<td>@i.amount</td>
+<td><b>@(p)</b></td>
+<td>@i.date</td>
+<td>Modify</td>
+<td>Delete</td></tr>
+
+@(x = x + 1)
+}
+
+}
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

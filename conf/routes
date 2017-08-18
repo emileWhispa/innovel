@@ -1,0 +1,67 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+GET     /login/form/                controllers.Application.form()
+GET     /register/form/             controllers.Application.signup()
+GET     /action/logout/             controllers.Application.signout()
+GET     /admin/depart/             	controllers.Application.depart()
+GET     /request/home/				controllers.Application.home()
+GET     /view/project/				controllers.Application.viewPro()
+GET     /view/details/				controllers.Application.details()
+GET     /view/tasks/				controllers.Application.tasks()
+GET     /view/mytasks/				controllers.Application.myTasks()
+GET     /fetch/project/:id			controllers.Application.fetchPro(id: Long)
+GET     /view/indetails/:id			controllers.Application.inDetails(id: Long)
+GET     /contact/developer/:id		controllers.Application.contact(id: Long)
+GET     /view/messages/:id			controllers.Application.messages(id: Long)
+GET     /forum/view/:id 			controllers.Application.fMessages(id: Long)
+GET     /update/complete/:id		controllers.Application.updateSubtasks(id: Long)
+GET     /view/subTasks/:id			controllers.Application.viewSubtasks(id: Long)
+GET     /action/delete/:id/var		controllers.Application.delete(id: Long, var: String)
+GET     /view/myPro/:id				controllers.Application.myPro(id:Long)
+GET     /action/assign/				controllers.Application.assign()
+GET     /view/unread/				controllers.Application.read()
+GET     /manager/cashin/			controllers.Application.cashIn()
+GET     /manager/cashout/			controllers.Application.cashOut()
+GET     /manager/balance/			controllers.Application.balance()
+GET     /manager/debts/				controllers.Application.debts()
+GET     /manager/covered/			controllers.Application.covered()
+GET     /manager/sentDebts/			controllers.Application.sentDebts()
+GET     /manager/payedDebt/			controllers.Application.payed()
+GET     /view/forums				controllers.Application.viewForums()
+GET     /view/update/:id/var		controllers.Application.update(id:Long,var: String)
+GET     /view/receipt/:id			controllers.Application.receipt(id:Long)
+GET     /add/member/:id/forum		controllers.Application.addMember(id:Long,forum:Long)
+GET     /view/usersList/:var		controllers.Application.viewUsers(var:String)
+GET     /error/javascript/			controllers.Application.turn()
+
+
+
+
+
+POST    /reg/details/				controllers.Application.regDetails()
+POST    /reg/subTask/				controllers.Application.regsubTasks()
+POST    /action/task/				controllers.Application.addTask()
+POST    /login/action/              controllers.Application.signin()
+POST    /send/message/              controllers.Application.sendMessage()
+POST    /forum/send/              	controllers.Application.sendForum()
+POST    /action/depart/             controllers.Application.regDep()
+POST    /action/proj/             	controllers.Application.regPro()
+POST    /action/users/             	controllers.Application.regUser()
+POST    /action/assignPro/          controllers.Application.assignPro()
+POST    /action/saveT/          	controllers.Application.saveTransaction()
+POST    /action/saveX/          	controllers.Application.saveOut()
+POST    /action/saveD/          	controllers.Application.saveDebts()
+POST    /action/coverDebt/          controllers.Application.coverDebt()
+POST    /action/saveSent/          	controllers.Application.saveSent()
+POST    /action/savePayed/          controllers.Application.savePayed()
+POST    /action/forumCreate/        controllers.Application.saveForum()
+POST    /users/update/		        controllers.Application.uploadProfile()
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

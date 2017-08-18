@@ -1,0 +1,46 @@
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+	show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form );
+</script>
+
+
+</div>
+
+<div id="table">
+
+<div id="tableHeader">Cash out</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>Total Cash In</td>
+<td>Total Cash Out</td>
+<td>Balance</td>
+</thead>
+
+<tbody>
+
+	<tr>
+		<td>@Cashin.total()</td>
+    <td>@Cashout.total()</td>
+    <td>@(Cashin.total()-Cashout.total())</td>
+  </tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

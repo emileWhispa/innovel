@@ -1,0 +1,200 @@
+@( loged : Users )(content: Html)
+
+
+<section id="header">
+	<div id="smallHeader">
+		<div id="myInner">
+		<ul>
+			<li><i class="fa fa-phone"></i>+(250) 788806857</li>
+			<li><i class="fa fa-envelope"></i>@("innovel@innovel.rw")</li>
+			<li><i class="fa fa-power-off"></i>@("Working Hours(8:00-18:00)")</li>
+		</ul>
+	</div>
+	</div>
+	<div class="logo_wrapper">
+		<div id="innDiv">
+			<img src="@routes.Assets.at("images/baner.jpg")"id="banner">
+			<div class="profileLogo"> <div class="logoPos">
+				@if( loged != null ){
+					<img src="@routes.Assets.at("upload/"+loged.photo)"onclick="runPro(this)">
+					<form action="@routes.Application.uploadProfile()"method="POST"enctype="multipart/form-data"style="display:none;">
+						<input type="file"name="photo"/>
+					</form>
+				}
+			</div></div>
+			<!--<div id="moreButton">
+				<div id="subMenu">
+					
+
+				</div>
+			</div>
+		-->
+	</div>
+</div>
+	<div id="navHeader">
+		<div id="innerData">
+		<ul>
+
+		@if(loged != null && loged.role.equals("Administrator") || loged != null && loged.role.equals("Manager") ){
+			@if( loged.role.equals("Administrator") ){
+			<li><span></span><a href="@routes.Application.depart()"class="active">Department</a></li>
+			<li><span></span><a href="@routes.Application.viewPro()">Projects</a></li>
+			<li><span></span><a href="@routes.Application.tasks()">Tasks</a></li>
+			<li><span></span><a href="@routes.Application.details()">details</a></li>
+			}else{
+				<li><span></span><a href="#">Dashboard</a></li>
+				<li><span></span><a href="#">Settings</a>
+					<ul>
+						<li><a href="@routes.Application.cashIn()"class="active">Cash In</a></li>
+						<li><a href="@routes.Application.cashOut()">Cash Out</a></li>
+						<li><a href="@routes.Application.debts()">Debt Receivable</a></li>
+						<li><a href="@routes.Application.covered()">Covered Debts</a></li>
+						<li><a href="@routes.Application.sentDebts()">Sent Debts</a></li>
+						<li><a href="@routes.Application.payed()">payed Debts</a></li>
+					</ul>
+				</li>
+				<li><span></span><a href="#">Reports</a>
+					<ul>
+						<li><a href="@routes.Application.balance()">General Balance</a></li>
+						<li><a href="#">Fin Reports</a></li>
+					</ul>
+				</li>
+				<li><span></span><a href="#">Archive</a>
+					<ul>
+						<li><a href="#">Company Docs</a></li>
+						<li><a href="#">Contracts</a></li>
+					</ul>
+				</li>
+			}
+			<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
+			@if( loged.role.equals("Administrator") ){
+				<li><span></span><a href="#"id="drop">.</a>
+					<ul>
+						@if( loged == null ){
+					
+					}else{
+					<li><a href="@routes.Application.myTasks()">My Tasks</a></li>
+					@if( loged.role.equals("Administrator") ){ 
+					<li><a href="@routes.Application.assign()">Assign Projects</a></li>
+					<li><a href="@routes.Application.signup()">Add User</a></li>
+					}
+					}
+					@if( loged != null && loged.role.equals("Manager") ){
+						<li><a href="#">User Management</a></li>
+					}
+					
+					<li><a href="#">Dashboard</a></li>
+					<li><a href="#">Innovel Ltd.</a></li>
+					</ul>
+				</li>
+			}
+		}else{
+		    @if(loged != null){
+				<li><span></span><a href="@routes.Application.myPro(loged.id)"class="active">My Projects</a></li>
+				<li><span></span><a href="@routes.Application.home()">Home</a></li>
+			}else{
+				<li><span></span><a href="@routes.Application.home()"class="active">Home</a></li>
+			}
+
+			
+			
+			@if( loged != null ){
+							<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
+			}else{
+				<li><span></span><a href="">Services</a>
+					<div>
+						<label id="h1">List of Our Services</label>
+						<label>
+							<ol>
+								<li>Web design</li>
+								<li>Web development softwares</li>
+								<li>Embeded solutions</li>
+								<li>Multimedia services</li>
+								<li>E-commerce</li>
+								<li>Mobile applications</li>
+								<li>Professional traing</li>
+								<li>Web hosting</li>
+								<li>Cloud computing</li>
+								<li>Server solutions(Linux & Win )</li>
+								<li>VPN solutions</li>
+							</ol>
+						</label>
+					</div>
+				</li>
+				<li><span></span><a href="#">About Us</a>
+					<div>
+						<label id="h1">Read more about Innovel</label>
+						<label>
+							Innovel Technologies Ltd is an independent IT and software development Company. Founded in 2016 and based in Rwanda, Innovel Technologies Ltd is an expert in development , integration and customization of complex entreprise solutions. With our experience, skilss and effeciency in process, we can assure you an
+							exceptional and cost effective solutions to the challenge of today's business
+						</label>
+					</div>
+				</li>
+				<li><span></span><a href="#">contact us</a>
+					<div>
+						<label id="h1">Address informations</label>
+						<label>
+							<ol>
+								<li>Innovel Technologies Ltd</li>
+								<li>KN # Rd Kicukiro/Gasharu</li>
+								<li>Kigali - Rwanda</li>
+								<li>Tel: +(250) 788806857</li>
+								<li>Email : @("innovel@innovel.rw")</li>
+								<li>Web: wwww.innovel.rw</li>
+							</ol>
+						</label>
+					</div>
+				</li>
+				<li><span></span><a href="@routes.Application.form()"id="santa">Sign In</a></li>
+			}
+		}
+		</ul>
+	</div>
+	</div>
+	<div class="showbox">
+  <div class="loader">
+    <svg class="circular" viewBox="25 25 50 50">
+      <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    </svg>
+  </div>
+</div>
+
+
+
+<div class="updateBox">
+
+<div id="innerBox">
+
+<ul><li><span>-</span></li><li onclick="hide(this.parentNode.parentNode.parentNode)"><span class="rotate">+</span></li></ul>
+
+<section class="updateData">
+
+</section>
+
+</div>
+
+</div>
+
+@if( loged != null ){
+
+<script>
+obj.id = "@loged.id";
+</script>
+<section class="pendingChat"id="chatter">
+
+<div class="boxhead">
+<a href="#"onclick="return activate(this,true);"id="fish">New messages <button id="number">0</button></a>
+	<div id="compose_button">Compose</div>
+	<ul class="navButtons">
+		<li onclick="forum(this);"></li>
+		<li onclick="return activate(this,false);"id="meat"></li>
+	</ul>
+</div>
+
+<div class="contentPlace"></div>
+
+</section>
+}
+
+
+</section>

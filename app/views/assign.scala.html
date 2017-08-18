@@ -1,0 +1,39 @@
+<script>
+var form = document.querySelector(".loginForm");
+var allInput = form.querySelectorAll(".form-input");
+
+blurer(allInput);
+
+submiter( form );
+</script>
+<form class="loginForm"method="POST"action="@routes.Application.assignPro()">
+	<div id="h"><h1>Assign</h1>project to users</div>
+	<br/>
+	 <div class="form-group">
+      	<span></span>
+        <select class="form-input" name="user"  id="F_Text">
+          <option value=""></option>
+          @for( i <- Users.allU()){
+          <option value="@i.id">@i.username</option>
+        }
+        </select>
+        <label for="F_Text" class="animated-label">Choose Project Owner</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <select class="form-input" name="pro"  id="P_Text">
+          <option value=""></option>
+          @for( i <- Projects.allDone()){
+          <option value="@i.id">@i.projectName</option>
+        }
+        </select>
+        <label for="P_Text" class="animated-label">Choose Project to assign</label>
+      </div>
+      <a href="#"id="forgot"> <input type="checkbox"name="accept"value="1"> Mark Project Private?</a>
+      <div id="buttonHandle">
+        <a href="#"id="moreX">More Options</a><input type="submit"name="first"value="Confirm"id="meBut"/>
+      </div>
+
+</form>
+

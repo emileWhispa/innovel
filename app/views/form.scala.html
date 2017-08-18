@@ -1,0 +1,36 @@
+<script>
+var form = document.querySelector(".loginForm");
+var allInput = form.querySelectorAll(".form-input");
+
+blurer(allInput);
+
+submiter( form , function(res){
+  if( res == "error" ){
+    $(".errorLog").style.width = "100%";
+    setTimeout(function(){$(".errorLog").style.width = "0px";},3000);
+  }else
+    window.location.reload();
+});
+</script>
+<form class="loginForm"method="POST"action="@routes.Application.signin()">
+	<div id="h"><h1>Sign in</h1>to continue to innovel</div>
+	<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="username"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter Username</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="password" class="form-input" name="password"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Password</label>
+      </div>
+      <div class="errorLog">Couldn't find your Innovel account</div>
+      <a href="#"id="forgot">Forgot Password?</a>
+      <div id="buttonHandle">
+        <a href="#"id="moreX">More Options</a><input type="submit"name="first"value="Next"id="meBut"/>
+      </div>
+
+</form>
+

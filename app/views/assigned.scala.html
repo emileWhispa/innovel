@@ -1,0 +1,67 @@
+@(user: Users)
+
+<div id="hD">
+<h1>My Projects</h1>
+</div>
+
+					<script>
+					
+					var data = document.querySelectorAll(".dataDetails");
+					for (var i = 0; i < data.length; i++) {
+						design(data[i].getAttribute("data"),data[i]);
+					};
+
+					var all = document.querySelectorAll("#bottle");
+					for (var i = 0; i < all.length; i++) {
+
+						var sum = 0;
+						var aL = all[i].querySelectorAll("a");
+						for (var io = 0; io < aL.length; io++) {
+							var val = parseInt(aL[io].getAttribute("value"));
+						    sum += val;
+						};
+						    var parent = obj.dir( all[i] , "#proDiv" , "parentNode" );
+						    parent.querySelector("#stink").innerHTML = percent( sum , aL.length );
+					};
+					</script>
+
+@for( i <- Owned.finderByFk(user.id) ){
+	<section id="proDiv">
+		<div id="leftSection">
+			<label id="name">@i.project.projectName</label>
+			<label id="forImg"><img src="@routes.Assets.at("upload/"+i.project.depart.departmentLogo)"></label>
+			<label class="compl">Completion Level : <b id="stink"> ... </b> </label>
+			<label class="compl"> <b style="font-size:16px;">@i.project.developer.username 
+			@i.project.developer.firstName : </b>
+			 <button class="button"value="contact/developer/@i.project.developer.id"onclick="read(this)"id="@i.project.developer.id">Contact Developer</button> </label>
+			 <label class="compl">Visit Demo Link : 
+			 	<a href="@i.project.projectLink"class="dag"target="_blank">@i.project.projectLink</a> </label>
+		</div>
+
+		<div id="otherData">
+
+			<div class="dataBox">
+				<p id="name">Project Details(<font color=red>@Details.finderByFk(i.project.id).length</font>)</p>
+				<div class="dataDetails taskDet"data="@routes.Application.inDetails(i.project.id)">
+					
+				</div>
+
+				<p id="name">Project Tasks(<font color=red>@Tasks.byPro(i.project.id).length</font>)</p>
+				<div class="taskDet"data="@routes.Application.inDetails(i.project.id)"id="bottle">
+					@for( ip <- Tasks.byPro(i.project.id)){
+					  		@if( Subtasks.findAll(ip.id).length == Subtasks.findDone(ip.id).length ){
+				<li><a value="100"href="@routes.Application.viewSubtasks(ip.id)"onmouseover="subTasks(this)"class="complete"onclick="return false;">@ip.taskName</a></li>
+					}else{
+				<li><a value="@(Subtasks.findDone(ip.id).length *100 / Subtasks.findAll(ip.id).length)"href="@routes.Application.viewSubtasks(ip.id)"onmouseover="subTasks(this)"onclick="return false;">@ip.taskName 
+					<label id='glingo'>@( Subtasks.findDone(ip.id).length *100 / Subtasks.findAll(ip.id).length)%</label></a></li>
+				}
+					}
+				</div>
+			</div>
+		</div>
+
+
+	</section>
+}
+
+

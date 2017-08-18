@@ -1,0 +1,114 @@
+<style>
+
+</style>
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+	show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form );
+</script>
+<div align="left"style="position:relative;z-index:5;">
+	<button class="button"id="batme"> <add>+</add> Add New Transaction</button>
+
+	<div id="madona">
+	<form class="loginForm"method="POST"action="@routes.Application.saveTransaction()"id="formA">
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="fromu"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Fromu</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="number" class="form-input" name="amount"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter Amount</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="motif"  id="M_Text"/>
+        <label for="M_Text" class="animated-label">Enter Motif</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="text" class="form-input" name="receipt"  id="R_Text"/>
+        <label for="R_Text" class="animated-label">Add Receipt</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <select class="form-input" name="done"  id="W_Text"/>
+        	<option value=""></option>
+        		@for( i <- Users.allM() ){
+        		<option value="@i.id">@i.username @i.firstName</option>
+        	}
+    	</select>
+        <label for="W_Text" class="animated-label">Done By</label>
+      </div>
+<br/>
+	 <div class="form-group">
+      	<span></span>
+        <input type="date" class="form-input" name="date"  id="Da_Text"onfocus="this.value= new Date();"/>
+        <label for="Da_Text" class="animated-label">Date</label>
+      </div>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+<div id="table">
+
+<div id="tableHeader">Cash in</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>From</td>
+<td>Amount</td>
+<td>Motif</td>
+<td>Receipt number</td>
+<td>Done by</td>
+<td>Date</td>
+<td>Print</td>
+<td>Modify</td>
+<td>Delete</td>
+</thead>
+
+<tbody>
+
+@for( i <- Cashin.all()){
+<tr>
+	<td>@i.fromu</td>
+	<td>@i.amount</td>
+	<td>@i.motif</td>
+<td><a href="@routes.Application.receipt(i.id)"onmouseover=""id="minute">print receipt</a></td>
+<td>@i.receipt</td>
+<td>@i.doneby.username @i.doneby.firstName</td>
+<td>@i.date</td>
+<td>Modify</td>
+<td>Delete</td></tr>
+}
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>
