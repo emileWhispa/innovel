@@ -49,6 +49,7 @@ GET		/admin/addSubtasks/			controllers.Application.subTasks()
 GET		/Developer/fPage/			controllers.Application.viewMine()
 GET		/Adminirator/apprv/			controllers.Application.approve()
 GET		/Adminirator/apprvIng/:id	controllers.Application.approver(id: Long)
+GET		/Adminirator/denyPro/:id	controllers.Application.deny(id: Long)
 
 
 

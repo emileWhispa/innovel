@@ -45,6 +45,17 @@ public class Application extends Controller {
             return ok("error");
         }
     }
+    public static Result deny(Long id){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Administrator") ){
+            ProjectAssignment pro = ProjectAssignment.finderById(id);
+            pro.status = "denied";
+            pro.update();
+            return ok("ok");
+        }else{
+            return ok("error");
+        }
+    }
     public static Result runMark(Long id){
         Users user = Users.finderById(Long.parseLong(session("userId")));
         if( user.role.equals("Developer") ){
@@ -639,9 +650,13 @@ public class Application extends Controller {
         if( session("userId") != null ){
             Form<Owned> userForm = Form.form(Owned.class).bindFromRequest();
             Owned d = new Owned();
-            d.owner = Users.finderById( Long.parseLong( userForm.field("user").value() ) );
-            d.project = Projects.finderById( Long.parseLong( userForm.field("pro").value() ) );
-            d.save();
+            String owner = userForm.field("user").value();
+            d.owner = Users.finderById( Long.parseLong( owner ) );
+            String pro = userForm.field("pro").value();
+            d.project = Projects.finderById( Long.parseLong( pro ) );
+            if( Owned.check(owner,pro) <= 0 ){
+                d.save();
+            }
             return ok("ok");
         }else{
             return ok("Error Login");
@@ -677,9 +692,12 @@ public class Application extends Controller {
             Debts ds = Debts.finderById(id);
             ds.deleteStatus = "1";
             ds.update();
-        }
-        else if( var.equals("cover") ){
+        }else if( var.equals("cover") ){
             Covered ds = Covered.finderById(id);
+            ds.deleteStatus = "1";
+            ds.update();
+        }else if( var.equals("sub") ){
+            Subtasks ds = Subtasks.finderById(id);
             ds.deleteStatus = "1";
             ds.update();
         }

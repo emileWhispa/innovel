@@ -12,6 +12,7 @@
 <thead>
 <td>task name</td>
 <td>Sub task name</td>
+<td>Project name</td>
 <td>Update Complete</td>
 </thead>
 
@@ -20,18 +21,25 @@
 @import scala.Predef; var x = 1;var p = 1;
 
 @for( i <- ProjectAssignment.byDev(user.id) ){
+ @if( !i.proj.deleteStatus.equals("1") ){
+
+ @if( i.status.equals("pending") || i.status.equals("denied") ){
 	<tr>
 		<td>@i.task.taskName</td>
 		<td>@i.subtask.subName</td>
-
+		<td>@i.proj.projectName</td>
 		<td>
-			@if( !i.status.equals("approved") ){
-			<button class="button"onclick="mark(this);"value="@routes.Application.runMark(i.id)">@if(i.status.equals("pending")){Complete}else{@i.status}</button>
+			@if( i.status.equals("pending") ){
+			<button class="button"onclick="mark(this);"value="@routes.Application.runMark(i.id)">Complete</button>
 		}else{
-			<button class="button"style="background:#1e90ff">@if(i.status.equals("pending")){Complete}else{@i.status}</button>
+			@if( i.status.equals("denied") ){
+				<button class="button"style="background:#1e90ff">Request again</button>
+			}
 		}
 		</td>
 	</tr>
+	}
+	}
 }
 
 </tbody>

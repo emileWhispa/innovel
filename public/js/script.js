@@ -346,7 +346,7 @@ function receive ( data ) {
 }
 
 function deleter ( button , ture ) {
-	var conf = confirm("Are you sure to "+ ((ture) ? "Approve":"Delete") + " this");
+	var conf = confirm("Are you sure to "+ ((ture) ? ture:"Delete") + " this");
 	if( conf ){
 		hide(button.parentNode.parentNode);
 		act.sendRequest({page:button.value,m:"GET"});

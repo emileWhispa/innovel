@@ -29,7 +29,7 @@ public class Subtasks extends Model {
         return find.where().not(Expr.eq("delete_status", "1")).findList();
     }
     public static List<Subtasks> finderByFk( Long id ){
-        return find.where().like("task",String.valueOf(id)).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).like("task",String.valueOf(id)).findList();
     }
     public static Subtasks finderById(Long id){
         return find.ref(id);
