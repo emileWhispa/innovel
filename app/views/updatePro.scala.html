@@ -1,0 +1,60 @@
+@(pro:Projects)
+
+
+<script>
+var form = $(".super-f");
+
+submiter( form ,function(data){
+	hip( $(".updateBox") );
+	$(".active").click();
+});
+
+</script>
+<div class="super-form">
+
+	<form action="@routes.Application.updatePro()"method="POST"class="super-f"enctype="multipart/form-data">
+<input type="hidden"value="@pro.id"name="id">
+<div class="super-group">
+	<label class='super-label'>Change Project name</label>
+	<input value="@pro.projectName"type="text"class="super-input"name="name">
+</div>
+
+<div class="super-group">
+	<label class='super-label'>Change Developer</label>
+	<select class="super-input"name="dev">
+		@for( i <- Users.allByCertain(pro.developer.id) ){
+			<option value="@i.id">@i.username</option>
+		}
+	</select>
+</div>
+
+<div class="super-group">
+	<label class='super-label'>Change Project Category</label>
+	<select class="super-input"name="dep">
+		@for( i <- Department.allByCertain(pro.depart.id) ){
+			<option value="@i.id">@i.departmentName</option>
+		}
+	</select>
+</div>
+<div class="super-group">
+	<label class='super-label'>Change Project Demo Link</label>
+	<input value="@pro.projectLink"type="text"class="super-input"name="link">
+</div>
+<div class="super-group">
+	<label class='super-label'>Change Project Details</label>
+	<textarea type="text"class="super-input"name="details"style="height:70px;">
+		@pro.projectDetails
+	</textarea>
+</div>
+<div class="super-group"id="forgot"style="margin:17px 0 17px 0;">
+	<input style="display:none;"onchange="change(this);"type="file"name="photo"/>
+	<span id="small"style="margin-top:-6px;right:0px"><img src="@routes.Assets.at("upload/"+pro.projectLogo)"></span>
+	<button class="attach"onclick="this.parentNode.querySelector('input').click()"type="button"></button>
+</div>
+<div class="super-group">
+<button type="submit"class="super-button">Update</button>
+</div>
+
+</form>
+
+</div>

@@ -1,0 +1,31 @@
+@(pro:Projects)
+
+<script>
+var form = $("#formB");
+
+
+submit2( form ,function(res){
+  var liclick = $(".active");
+  liclick.click();
+  alert(res);
+});
+</script>
+
+<h4 class="assign-header">@pro.projectName</h4>
+
+<form method="POST"action="@routes.Application.checker()"id="formB"enctype="urlencoded/form-data">
+		<input type="hidden"value="@pro.id"name="project">
+@for( i <- Subtasks.all() ){
+	<div class="checkList">
+		<input name="check"class="checking checkbox"type="checkbox"value="@i.id"id="id@i.id"><label for="id@i.id">@i.subName</label>
+		<select class="select-box checking"name="select"disabled="1">
+			<option value="">Choose Staff</option>
+			@for( ix <- Users.allStaff() ){
+				<option value="@ix.id">@ix.username</option>
+			}
+		</select>
+	</div>
+}
+
+<input type="submit"class="button"name="submit"value="Assign sub Tasks"/>
+</form>

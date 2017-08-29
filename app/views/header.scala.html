@@ -11,9 +11,20 @@
 		</ul>
 	</div>
 	</div>
+	@if( loged == null ){
+	<!--<div id="moreButton">
+				<div id="subMenu">
+					
+	<div class="absolute-link">
+		
+	</div>
+
+				</div>
+			</div>-->
+		}
 	<div class="logo_wrapper">
 		<div id="innDiv">
-			<img src="@routes.Assets.at("images/baner.jpg")"id="banner">
+			<img src="@routes.Assets.at("images/baner2.png")"id="banner">
 			<div class="profileLogo"> <div class="logoPos">
 				@if( loged != null ){
 					<img src="@routes.Assets.at("upload/"+loged.photo)"onclick="runPro(this)">
@@ -22,41 +33,61 @@
 					</form>
 				}
 			</div></div>
-			<!--<div id="moreButton">
-				<div id="subMenu">
-					
-
-				</div>
-			</div>
-		-->
+			@if( loged == null ){
+			
+		}
 	</div>
 </div>
 	<div id="navHeader">
 		<div id="innerData">
 		<ul>
 
-		@if(loged != null && loged.role.equals("Administrator") || loged != null && loged.role.equals("Manager") ){
+		@if(loged != null && loged.role.equals("Administrator") || loged != null && loged.role.equals("Manager") || loged != null && loged.role.equals("Developer") ){
 			@if( loged.role.equals("Administrator") ){
-			<li><span></span><a href="@routes.Application.depart()"class="active">Department</a></li>
-			<li><span></span><a href="@routes.Application.viewPro()">Projects</a></li>
-			<li><span></span><a href="@routes.Application.tasks()">Tasks</a></li>
+			<li><span></span><a href="@routes.Application.signup()">Add Users</a></li>
+			<li><span></span><a href="@routes.Application.depart()"class="active">Categories</a></li>
+			<li><span></span><a href="#">Projects</a>
+				<ul>
+					<li><a href="@routes.Application.viewPro("private")">Private project</a></li>
+					<li><a href="@routes.Application.viewPro("public")">Public project</a></li>
+				</ul>
+			</li>
+			<li><span></span><a href="#">Activity</a>
+				<ul>
+					<li><a href="@routes.Application.tasks()">Tasks</a></li>
+					<li><a href="@routes.Application.subTasks()">Sub Tasks</a></li>
+				</ul>
+			</li>
 			<li><span></span><a href="@routes.Application.details()">details</a></li>
 			}else{
+			@if( loged.role.equals("Manager") ){
 				<li><span></span><a href="#">Dashboard</a></li>
-				<li><span></span><a href="#">Settings</a>
+				<li><span></span><a href="#">Add TRansaction</a>
 					<ul>
 						<li><a href="@routes.Application.cashIn()"class="active">Cash In</a></li>
 						<li><a href="@routes.Application.cashOut()">Cash Out</a></li>
-						<li><a href="@routes.Application.debts()">Debt Receivable</a></li>
-						<li><a href="@routes.Application.covered()">Covered Debts</a></li>
-						<li><a href="@routes.Application.sentDebts()">Sent Debts</a></li>
-						<li><a href="@routes.Application.payed()">payed Debts</a></li>
+						<li><a href="@routes.Application.debts()">Debt Received</a></li>
+						<li><a href="@routes.Application.covered()">Debts Covered</a></li>
+						<!--<li><a href="@routes.Application.sentDebts()">Sent Debts</a></li>
+						<li><a href="@routes.Application.payed()">payed Debts</a></li>-->
 					</ul>
 				</li>
-				<li><span></span><a href="#">Reports</a>
+				<li><span></span><a href="#">fin Reports</a>
 					<ul>
-						<li><a href="@routes.Application.balance()">General Balance</a></li>
-						<li><a href="#">Fin Reports</a></li>
+						<li class="dove"><a href="#">Transaction Reports</a>
+							<p class="droper">
+								<a href="@routes.Application.cashInReport()">Cashin Reports</a>
+								<a href="@routes.Application.cashOutReport()">Cashout Reports</a>
+								<a href="@routes.Application.balance()">General transation report</a>
+							</p>
+						</li>
+						<li class="dove"><a href="#">Debt Reports</a>
+							<p class="droper">
+								<a href="@routes.Application.debtReport()">Debt received Reports</a>
+								<a href="@routes.Application.coveredReport()">Debt Covered Reports</a>
+								<a href="@routes.Application.balanceDebt()">General debt report</a>
+							</p>
+						</li>
 					</ul>
 				</li>
 				<li><span></span><a href="#">Archive</a>
@@ -65,8 +96,20 @@
 						<li><a href="#">Contracts</a></li>
 					</ul>
 				</li>
+				<li><span></span><a href="#"id="drop">.</a>
+					<ul>
+						<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
+					</ul>
+				</li>
+			}else{
+				<li><span></span><a href="@routes.Application.viewMine()"class="active">View my Tasks</a></li>
+				<li><span></span><a href="#"id="drop">.</a>
+					<ul>
+						<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
+					</ul>
+				</li>
 			}
-			<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
+			}
 			@if( loged.role.equals("Administrator") ){
 				<li><span></span><a href="#"id="drop">.</a>
 					<ul>
@@ -76,21 +119,20 @@
 					<li><a href="@routes.Application.myTasks()">My Tasks</a></li>
 					@if( loged.role.equals("Administrator") ){ 
 					<li><a href="@routes.Application.assign()">Assign Projects</a></li>
-					<li><a href="@routes.Application.signup()">Add User</a></li>
+					<li><a href="@routes.Application.approve()">Approve Completion</a></li>
 					}
+					<li><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
 					}
 					@if( loged != null && loged.role.equals("Manager") ){
 						<li><a href="#">User Management</a></li>
 					}
-					
-					<li><a href="#">Dashboard</a></li>
-					<li><a href="#">Innovel Ltd.</a></li>
+					<li><a href="@routes.Application.arrange()">Arrange Categories</a></li>
 					</ul>
 				</li>
 			}
 		}else{
 		    @if(loged != null){
-				<li><span></span><a href="@routes.Application.myPro(loged.id)"class="active">My Projects</a></li>
+				<li><span></span><a href="@routes.Application.myPro(loged.id,"0")"class="active">My Projects</a></li>
 				<li><span></span><a href="@routes.Application.home()">Home</a></li>
 			}else{
 				<li><span></span><a href="@routes.Application.home()"class="active">Home</a></li>
@@ -101,10 +143,20 @@
 			@if( loged != null ){
 							<li><span></span><a href="@routes.Application.signout()"onsignout="1">Sign out</a></li>
 			}else{
+				<li><span></span><a href="#">About Us</a>
+					<div>
+						<label>
+							<img src="@routes.Assets.at("images/about.png")">
+							Innovel Technologies Ltd is an independent IT and software development Company. Founded in 2016 and based in Rwanda, Innovel Technologies Ltd is an expert in development , integration and customization of complex entreprise solutions. With our experience, skilss and effeciency in process, we can assure you an
+							exceptional and cost effective solutions to the challenge of today's business
+
+						</label>
+					</div>
+				</li>
 				<li><span></span><a href="">Services</a>
 					<div>
-						<label id="h1">List of Our Services</label>
 						<label>
+							<img src="@routes.Assets.at("images/services.png?id=1")">
 							<ol>
 								<li>Web design</li>
 								<li>Web development softwares</li>
@@ -116,23 +168,12 @@
 								<li>Web hosting</li>
 								<li>Cloud computing</li>
 								<li>Server solutions(Linux & Win )</li>
-								<li>VPN solutions</li>
 							</ol>
-						</label>
-					</div>
-				</li>
-				<li><span></span><a href="#">About Us</a>
-					<div>
-						<label id="h1">Read more about Innovel</label>
-						<label>
-							Innovel Technologies Ltd is an independent IT and software development Company. Founded in 2016 and based in Rwanda, Innovel Technologies Ltd is an expert in development , integration and customization of complex entreprise solutions. With our experience, skilss and effeciency in process, we can assure you an
-							exceptional and cost effective solutions to the challenge of today's business
 						</label>
 					</div>
 				</li>
 				<li><span></span><a href="#">contact us</a>
 					<div>
-						<label id="h1">Address informations</label>
 						<label>
 							<ol>
 								<li>Innovel Technologies Ltd</li>
@@ -145,7 +186,12 @@
 						</label>
 					</div>
 				</li>
-				<li><span></span><a href="@routes.Application.form()"id="santa">Sign In</a></li>
+				<li><span></span><a href="#"id="drop"style="margin-left:50px;">.</a>
+					<ul>
+						<li><a href="@routes.Application.form()"id="santa">Sign in</a></li>
+						<!--<li><a href="@routes.Application.signup()">Sign up</a></li>-->
+					</ul>
+				</li>
 			}
 		}
 		</ul>
@@ -165,7 +211,7 @@
 
 <div id="innerBox">
 
-<ul><li><span>-</span></li><li onclick="hide(this.parentNode.parentNode.parentNode)"><span class="rotate">+</span></li></ul>
+<ul><li><span>-</span></li><li onclick="hip($('.updateBox'))"><span class="rotate">+</span></li></ul>
 
 <section class="updateData">
 
@@ -196,5 +242,12 @@ obj.id = "@loged.id";
 </section>
 }
 
+<div class="modal-2">
+	<button class="modal-close"></button>
+	<div class="modal-inner">
+
+	</div>
+
+</div>
 
 </section>

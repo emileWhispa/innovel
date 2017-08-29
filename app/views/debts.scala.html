@@ -11,7 +11,9 @@ lin.onclick = function(){
 }
 blurer( allInput );
 
-submiter( form );
+submiter( form , function(){
+  $(".active").click();
+});
 </script>
 <div align="left"style="position:relative;z-index:5;">
 	<button class="button"id="batme"> <add>+</add> Add New Debt</button>
@@ -64,7 +66,7 @@ submiter( form );
 
 <div id="table">
 
-<div id="tableHeader">Debts that company received</div>
+<div id="tableHeader">Debts received</div>
 
 <div id="tableContent">
 
@@ -85,12 +87,17 @@ submiter( form );
 @for( i <- Debts.all()){
 <tr>
 	<td>@i.fromu</td>
-	<td>@i.amount</td>
+	<td>@Cashin.asString(i.amount)</td>
 	<td>@i.motif</td>
 <td>@i.doneby.username @i.doneby.firstName</td>
 <td>@i.date</td>
-<td>Modify</td>
-<td>Delete</td></tr>
+
+
+<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"debt")"></button></td>
+<td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"debt")"></button></td>
+
+
+</tr>
 }
 
 

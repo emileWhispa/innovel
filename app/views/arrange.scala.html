@@ -1,0 +1,16 @@
+@(adm:Users)
+
+<ul class="listing">
+  @for( i <- Department.all() ){
+      <a href="@i.id">@i.departmentName 
+        <span class="right-icon">
+          <i class="fa fa-arrow-circle-o-up"></i>
+          <i class="fa fa-arrow-circle-o-down"></i>
+        </span>
+      </a>
+  }
+</ul>
+
+<script>
+arrange( $(".listing") );
+</script>

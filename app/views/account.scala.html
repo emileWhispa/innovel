@@ -1,12 +1,19 @@
+@(role:String)
 <script>
 var form = document.querySelector(".loginForm");
 var allInput = form.querySelectorAll(".form-input");
 
 blurer(allInput);
 
-submiter( form );
+submiter( form ,function(){
+  window.location.reload();
+});
 </script>
+@if( role.equals("Administrator") ){
 <form class="loginForm"method="POST"action="@routes.Application.regUser()">
+}else{
+  <form class="loginForm"method="POST"action="@routes.Application.selfReg()">
+}
 	<div id="h"><h1>Register </h1>new user in system</div>
 	<br/>
 	 <div class="form-group">
@@ -49,6 +56,7 @@ submiter( form );
       </select>
         <label for="D_Text" for="D_TXext" class="animated-label">Choose Birth Date</label>
       </div>
+      @if( role.equals("Administrator") ){
       <br/>
       <div class="form-group">
         <span></span>
@@ -61,6 +69,7 @@ submiter( form );
         </select>
         <label for="T_Text" class="animated-label">Choose user type</label>
       </div>
+    }
       <br/>
    <div class="form-group">
         <span></span>

@@ -1,0 +1,41 @@
+@(user:Users)
+
+
+<div id="table">
+
+<div id="tableHeader">approve requested subtask completion</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>task name</td>
+<td>Sub task name</td>
+<td>Project name</td>
+<td>Project subtask Developer</td>
+<td>Update Complete</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 1;var p = 1;
+
+@for( i <- ProjectAssignment.byStatus("requested") ){
+	<tr>
+		<td>@i.task.taskName</td>
+		<td>@i.subtask.subName</td>
+		<td>@i.proj.projectName</td>
+		<td>@i.developer.username</td>
+		<td><button class="button"onclick="deleter(this,true);"value="@routes.Application.approver(i.id)">Approve</button></td>
+	</tr>
+}
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

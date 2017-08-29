@@ -37,7 +37,7 @@ public class Covered extends Model {
         return find.ref(id);
     }
     public static List<Covered> finderByFk(long id){
-        return find.where().like("debt",String.valueOf(id)).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).like("debt",String.valueOf(id)).findList();
     }
     public static int total(){
         int num = 0;

@@ -30,11 +30,11 @@ submiter( form );
 
 <tbody>
 
-	<tr>
-		<td>@Cashin.total()</td>
-    <td>@Cashout.total()</td>
-    <td>@(Cashin.total()-Cashout.total())</td>
-  </tr>
+<tr>
+	<td>@Cashin.asString(Cashin.total())</td>
+    <td>@Cashin.asString(Cashout.total())</td>
+    <td>@Cashin.asString(Cashin.total()-Cashout.total())</td>
+ </tr>
 
 </tbody>
 

@@ -26,6 +26,84 @@ public class Application extends Controller {
             return ok("error");
         }
     }
+    public static Result approve(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Administrator") ){
+            return ok( approve.render(user) );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result approver(Long id){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Administrator") ){
+            ProjectAssignment pro = ProjectAssignment.finderById(id);
+            pro.status = "approved";
+            pro.update();
+            return ok("ok");
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result runMark(Long id){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Developer") ){
+            ProjectAssignment d = ProjectAssignment.finderById(id);
+            d.status = "requested";
+            d.update();
+            return ok( "requested" );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result viewMine(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Developer") ){
+            return ok( viewmine.render(user) );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result cashInReport(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Manager") ){
+            return ok( cashInReport.render() );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result cashOutReport(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Manager") ){
+            return ok( cashOutReport.render() );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result balanceDebt(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Manager") ){
+            return ok( balanceDebt.render() );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result coveredReport(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Manager") ){
+            return ok( coveredReport.render() );
+        }else{
+            return ok("error");
+        }
+    }
+    public static Result debtReport(){
+        Users user = Users.finderById(Long.parseLong(session("userId")));
+        if( user.role.equals("Manager") ){
+            return ok( debtReport.render() );
+        }else{
+            return ok("error");
+        }
+    }
     public static Result cashOut(){
         Users user = Users.finderById(Long.parseLong(session("userId")));
         if( user.role.equals("Manager") ){
@@ -93,7 +171,38 @@ public class Application extends Controller {
     }
     }
     public static Result signup() {
-        return ok(account.render());
+        if( session("admin") != null ){
+            Users user = Users.finderById(Long.parseLong(session("admin")));
+            return ok(account.render(user.role));
+        }else{
+            return ok(account.render("user"));
+        }
+    }
+    public static Result arrange() {
+        if( session("admin") != null ){
+            Users user = Users.finderById(Long.parseLong(session("admin")));
+            return ok(arrange.render(user));
+        }else{
+            return ok("login");
+        }
+    }
+    public static Result interchange(String str) {
+        if( session("admin") != null ){
+            String string[] = str.split(":");
+            String sting = "";
+            for( String ix : string ){
+                sting +=ix;
+                String data[] = ix.split("=");
+                Long id = Long.parseLong( data[0] );
+                String pos = data[data.length-1];
+                Department das = Department.finderById( id );
+                das.level = Integer.valueOf( pos );
+                das.update();
+            }
+            return ok(sting);
+        }else{
+            return ok("login");
+        }
     }
     public static Result signout() {
     	session().clear();
@@ -123,18 +232,144 @@ public class Application extends Controller {
             return ok("errorX");
         }
     }
+    public static Result updateDep() {
+        if(session("admin") != null ){
+            Form<Department> userForm = Form.form(Department.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Department dx = userForm.get();
+            Department dep = Department.finderById( id );
+            dep.departmentName = userForm.field("name").value();
+            dep.departmentDetails = userForm.field("details").value();
+            String vx = userForm.field("photo").value();
+            String img = uploadImage();
+            if( !img.equals("logo.png") ) dep.departmentLogo = img;
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateTask() {
+        if(session("admin") != null ){
+            Form<Tasks> userForm = Form.form(Tasks.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            //Department dx = userForm.get();
+            Tasks dep = Tasks.finderById( id );
+            dep.taskName = userForm.field("name").value();
+            dep.complete = Integer.valueOf(userForm.field("details").value());
+            
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateSub() {
+        if(session("admin") != null ){
+            Form<Subtasks> userForm = Form.form(Subtasks.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            //Subtasks dx = userForm.get();
+            Subtasks dep = Subtasks.finderById( id );
+            dep.subName = userForm.field("name").value();
+            dep.subMarks = Double.valueOf(userForm.field("details").value());
+            Long task = Long.parseLong( userForm.field("task").value() );
+            dep.task = Tasks.finderById(task);
+            
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateDetails() {
+        if(session("admin") != null ){
+            Form<Details> userForm = Form.form(Details.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Details dx = userForm.get();
+            Details dep = Details.finderById( id );
+            dep.content = userForm.field("details").value();
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateCashin() {
+        if(session("userId") != null ){
+            Form<Cashin> userForm = Form.form(Cashin.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Cashin dx = userForm.get();
+            Cashin dep = Cashin.finderById( id );
+            dep.fromu = userForm.field("fromu").value();
+            dep.amount = Integer.valueOf(userForm.field("amount").value());
+            dep.motif = userForm.field("details").value();
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateCovered() {
+        if(session("userId") != null ){
+            Form<Covered> userForm = Form.form(Covered.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Covered dx = userForm.get();
+            Covered dep = Covered.finderById( id );
+            dep.amount = Integer.valueOf(userForm.field("amount").value());
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updateCashout() {
+        if(session("userId") != null ){
+            Form<Cashout> userForm = Form.form(Cashout.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Cashout dx = userForm.get();
+            Cashout dep = Cashout.finderById( id );
+            dep.sendto = userForm.field("sendto").value();
+            dep.amount = Integer.valueOf(userForm.field("amount").value());
+            dep.motif = userForm.field("details").value();
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
+    public static Result updatePro() {
+        if(session("admin") != null ){
+            Form<Projects> userForm = Form.form(Projects.class).bindFromRequest();
+            Long id = Long.parseLong( userForm.field("id").value() );
+            Projects dx = userForm.get();
+            Projects dep = Projects.finderById( id );
+            dep.projectName = userForm.field("name").value();
+            String user = userForm.field("dev").value();
+            dep.developer = Users.finderById( Long.parseLong(user) );
+            String deper = userForm.field("dep").value();
+            dep.depart = Department.finderById( Long.parseLong(deper) );
+            dep.projectDetails = userForm.field("details").value();
+            String img = uploadImage();
+            dep.projectLink = userForm.field("link").value();
+            if( !img.equals("logo.png") ) dep.projectLogo = img;
+            dep.update();
+            return ok("ok");
+        }else{
+            return ok("Error Login");
+        }
+    }
     public static Result depart() {
-        if(session("admin") != null )
+        if(session("admin") != null ){
             return ok(departement.render());
-        else
+        }else
             return ok("Error Login");
     }
     public static Result home() {
         return ok(homepage.render());
     }
-    public static Result viewPro() {
+    public static Result viewPro(String data ) {
         if(session("admin") != null )
-            return ok(projectReg.render());
+            return ok(projectReg.render(data));
         else
         return ok("Error Log in");
     }
@@ -245,11 +480,7 @@ public class Application extends Controller {
         d.taskName = form.field("names").value();
         int o = Integer.valueOf(form.field("complete").value());
         d.complete = o;
-        Long ow = Long.parseLong(form.field("owner").value());
-        d.owner = Users.finderById(ow);
 
-        Long pro = Long.parseLong(form.field("project").value());
-        d.proj = Projects.finderById(pro);
         d.save();
         return ok("ok");
     }
@@ -276,6 +507,7 @@ public class Application extends Controller {
         }
         d.projectName = userForm.field("names").value();
         d.projectLink = userForm.field("link").value();
+        d.projectDetails = userForm.field("details").value();
         String userId = userForm.field("developer").value();
         Long user = Long.parseLong(userId);
         d.developer = Users.finderById(user);
@@ -298,8 +530,15 @@ public class Application extends Controller {
         }else
             return ok("Error Login");
     }
-    public static Result viewSubtasks(Long id){
-        List<Subtasks> sub = Subtasks.finderByFk(id);
+    public static Result subTasks(){
+        if(session("admin") != null ){
+            Users user = Users.finderById(Long.parseLong(session("userId")));
+            return ok(subtasks.render(user));
+        }else
+            return ok("Error Login");
+    }
+    public static Result viewSubtasks(Long id,Long project){
+        List<ProjectAssignment> sub = ProjectAssignment.finderByFk(id,project);
         return ok(Json.toJson(sub));
     }
     public static Result updateSubtasks(Long id){
@@ -308,10 +547,11 @@ public class Application extends Controller {
         d.update();
         return ok("ok");
     }
-    public static Result myPro(Long user){
-        if( session("userId") != null ){
-            Users userx = Users.finderById(Long.parseLong(session("userId")));
-            return ok(assigned.render(userx));
+    public static Result myPro(Long user,String str){
+        if( session("userId") != null || !str.equals("0") ){
+            String stx = ( session("userId") != null ) ? session("userId") : "0";
+            Users userx = Users.finderById(Long.parseLong(stx));
+            return ok(assigned.render(userx,str));
         }else{
             return ok("error");
         }
@@ -323,11 +563,71 @@ public class Application extends Controller {
             return ok("Error Login");
         }
     }
+    public static Result checker(){
+        Form<ProjectAssignment> paperForm = Form.form(ProjectAssignment.class).bindFromRequest();
+        ProjectAssignment paper = paperForm.get();
+
+        // get request value from submitted form
+        Map<String, String[]> map = request().body().asFormUrlEncoded();
+        String[] checkedVal = map.get("check");
+        String[] users = map.get("select");
+
+        Long val = null;
+        int zero = 0;
+        Long idea = Long.parseLong( paperForm.field("project").value() );
+        Projects project = Projects.finderById( idea );
+        for( String up : users ){
+            if( up != "" ){
+                val = Long.parseLong( checkedVal[zero] );
+                ProjectAssignment p = new ProjectAssignment();
+                Subtasks sub = Subtasks.finderById( val );
+                p.subtask = sub;
+                String gigo = up;
+                p.task = sub.task;
+                Users u = Users.finderById(Long.valueOf(gigo));
+                p.developer = u;
+                p.proj = project;
+                p.status = "pending";
+                if( ProjectAssignment.allNumber(val,idea) <= 0 ){
+                    p.save();
+                }
+            zero++;
+            }
+        }
+        return redirect("/");
+    }
     public static Result update(Long id,String var){
         if( session("userId") != null ){
             if( var.equals("dep")){
                 Department dep = Department.finderById(id);
                 return ok(updateDep.render(dep));
+            }else if( var.equals("pro") ){
+                Projects dep = Projects.finderById(id);
+                return ok(updatePro.render(dep));
+            }else if( var.equals("cashin") ){
+                Cashin dep = Cashin.finderById(id);
+                return ok(updateCashin.render(dep));
+            }else if( var.equals("cashout") ){
+                Cashout dep = Cashout.finderById(id);
+                return ok(updateCashout.render(dep));
+            }else if( var.equals("debt") ){
+                Debts deb = Debts.finderById(id);
+                return ok(updateDebt.render(deb));
+            }else if( var.equals("cover") ){
+                Covered deb = Covered.finderById(id);
+                return ok(updateCover.render(deb));
+            }else if( var.equals("assign") ){
+                Projects deb = Projects.finderById(id);
+                return ok(proAssign.render(deb));
+            }else if( var.equals("det") ){
+                Details deb = Details.finderById(id);
+                return ok(updateDetails.render(deb));
+            }else if( var.equals("sub") ){
+                Subtasks deb = Subtasks.finderById(id);
+                return ok(updateSub.render(deb));
+            }else if( var.equals("tasks") ){
+                Tasks deb = Tasks.finderById(id);
+                return ok(updateTask.render(deb));
             }else{
                 return ok("ok");
             }
@@ -348,6 +648,7 @@ public class Application extends Controller {
         }
     }
     public static Result delete(Long id, String var){
+        if( session("userId") != null ){
         if( var.equals("dep") ){
             Department ds = Department.finderById(id);
             ds.delete_status = "1";
@@ -364,7 +665,25 @@ public class Application extends Controller {
             Details ds = Details.finderById(id);
             ds.deleteStatus = "1";
             ds.update();
+        }else if( var.equals("cashin") ){
+            Cashin ds = Cashin.finderById(id);
+            ds.deleteStatus = "1";
+            ds.update();
+        }else if( var.equals("cashout") ){
+            Cashout ds = Cashout.finderById(id);
+            ds.deleteStatus = "1";
+            ds.update();
+        }else if( var.equals("debt") ){
+            Debts ds = Debts.finderById(id);
+            ds.deleteStatus = "1";
+            ds.update();
         }
+        else if( var.equals("cover") ){
+            Covered ds = Covered.finderById(id);
+            ds.deleteStatus = "1";
+            ds.update();
+        }
+    }
         return ok("ok");
     }
     public static Result regsubTasks(){
@@ -373,7 +692,7 @@ public class Application extends Controller {
              //Projects pro = userForm.get();
              Subtasks d = new Subtasks();
              d.subName = userForm.field("names").value();
-             d.subDetail = userForm.field("content").value();
+             d.subMarks = Double.valueOf( userForm.field("content").value() );
              Long task = Long.parseLong( userForm.field("task").value() );
              d.task = Tasks.finderById( task );
              d.save();
@@ -389,7 +708,6 @@ public class Application extends Controller {
         Form<Details> uForm = Form.form(Details.class).bindFromRequest();
         //Details pro = uForm.get();
         Details det = new Details();
-        det.name = uForm.field("names").value();
         det.content = uForm.field("content").value();
         String proj = uForm.field("project").value();
         Long project = Long.parseLong(proj);
@@ -448,9 +766,13 @@ public class Application extends Controller {
         cash.fromu = userForm.field("fromu").value();
         cash.amount = Integer.valueOf(userForm.field("amount").value());
         cash.motif = userForm.field("motif").value();
-        cash.receipt = userForm.field("receipt").value();
         Users userX = Users.finderById(Long.parseLong(userForm.field("done").value()));
+        cash.receipt = 0+Cashin.lastId()+userX.username.substring(0, 1)+userX.firstName.substring(0, 1)+"2017";
         cash.doneby = userX;
+        cash.mode = userForm.field("mode").value();
+        cash.otherInfo = userForm.field("other").value();
+        cash.receiptCategory = userForm.field("receipt_category").value();
+        cash.vatCategory = userForm.field("vat_category").value();
         cash.date = userForm.field("date").value();
         cash.deleteStatus = "0";
         cash.save();
@@ -519,6 +841,7 @@ public class Application extends Controller {
         return ok("ok");
     }
     public static Result regUser() {
+     if( session("admin") != null ){
         Form<Users> userForm = Form.form(Users.class).bindFromRequest();
         Users user = new Users();
         user.username = userForm.field("username").value();
@@ -528,6 +851,24 @@ public class Application extends Controller {
         user.role = userForm.field("utype").value();
         user.password = userForm.field("password").value();
         user.save();
+     }
+        return ok("ok");
+    }
+    public static Result selfReg() {
+        Form<Users> userForm = Form.form(Users.class).bindFromRequest();
+        Users user = new Users();
+        user.username = userForm.field("username").value();
+        user.firstName = userForm.field("firstname").value();
+        user.lastName = userForm.field("lastname").value();
+        user.dob = userForm.field("day").value()+"/" +userForm.field("month").value()+"/"+userForm.field("year").value();
+        user.role = "Client";
+        user.password = userForm.field("password").value();
+        user.save();
+        Long idX = null;
+        for ( Users f : Users.all() ) {
+            idX = f.id;
+        }
+        session("userId",String.valueOf(idX));
         return ok("ok");
     }
     public static Result signin() {
@@ -548,7 +889,7 @@ public class Application extends Controller {
         if (Auth){
             System.out.println("---------------- \n user log in in successfully!");
             session("userId", us);
-            if( adm ) session("admin",user.username);
+            if( adm ) session("admin",us);
             return ok("ok");
         }else {
             return ok("error");

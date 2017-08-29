@@ -1,0 +1,44 @@
+@(user:Users)
+
+
+<div id="table">
+
+<div id="tableHeader">View task assigned on me</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>task name</td>
+<td>Sub task name</td>
+<td>Update Complete</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 1;var p = 1;
+
+@for( i <- ProjectAssignment.byDev(user.id) ){
+	<tr>
+		<td>@i.task.taskName</td>
+		<td>@i.subtask.subName</td>
+
+		<td>
+			@if( !i.status.equals("approved") ){
+			<button class="button"onclick="mark(this);"value="@routes.Application.runMark(i.id)">@if(i.status.equals("pending")){Complete}else{@i.status}</button>
+		}else{
+			<button class="button"style="background:#1e90ff">@if(i.status.equals("pending")){Complete}else{@i.status}</button>
+		}
+		</td>
+	</tr>
+}
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

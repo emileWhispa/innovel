@@ -1,8 +1,6 @@
-@(user: Users)
+@(user: Users,reason: String)
 
-<div id="hD">
-<h1>My Projects</h1>
-</div>
+
 
 					<script>
 					
@@ -21,15 +19,54 @@
 						    sum += val;
 						};
 						    var parent = obj.dir( all[i] , "#proDiv" , "parentNode" );
-						    parent.querySelector("#stink").innerHTML = percent( sum , aL.length );
+						    parent.querySelector("#stink").innerHTML = sum+"%";
 					};
 					</script>
 
+@if( reason != "0" ){
+	
+@for( i <- Projects.finder(reason) ){
+<div style="margin:40px 0px;"></div>
+	<section id="proDiv">
+		<div id="leftSection">
+			<label id="name">@i.projectName</label>
+			<label id="forImg"><img src="@routes.Assets.at("upload/"+i.projectLogo)"></label>
+			<label class="compl"></label>
+			<label class="compl"> <b style="font-size:16px;">for any other clarification,don't hesitate to contact us!!!!
+			</b>
+			 <button class="button"value="contact/developer/@i.developer.id"onclick="read(this)"id="@i.developer.id">
+			 	Contact us
+			 </button> </label>
+			 <label class="compl">Visit Demo Link : 
+			 	<a href="http://@i.projectLink"class="dag"target="_blank">@i.projectLink</a> </label>
+		</div>
+
+		<div id="otherData">
+
+			<div class="dataBox">
+				<p id="name"style="text-align:center">Project Details</p>
+				<pre class="dataDetails taskDet"data="@routes.Application.inDetails(i.id)">
+					
+				</pre>
+				
+			</div>
+		</div>
+
+
+	</section>
+}
+
+}else{
+<!-- <div id="hD">
+<h1>My Projects</h1>
+</div>
+-->
 @for( i <- Owned.finderByFk(user.id) ){
+@if( !i.project.deleteStatus.equals("1") ){
 	<section id="proDiv">
 		<div id="leftSection">
 			<label id="name">@i.project.projectName</label>
-			<label id="forImg"><img src="@routes.Assets.at("upload/"+i.project.depart.departmentLogo)"></label>
+			<label id="forImg"><img src="@routes.Assets.at("upload/"+i.project.projectLogo)"></label>
 			<label class="compl">Completion Level : <b id="stink"> ... </b> </label>
 			<label class="compl"> <b style="font-size:16px;">@i.project.developer.username 
 			@i.project.developer.firstName : </b>
@@ -41,19 +78,19 @@
 		<div id="otherData">
 
 			<div class="dataBox">
-				<p id="name">Project Details(<font color=red>@Details.finderByFk(i.project.id).length</font>)</p>
+				<p id="name">Project Details</p>
 				<div class="dataDetails taskDet"data="@routes.Application.inDetails(i.project.id)">
-					
+					@i.project.projectDetails
 				</div>
 
-				<p id="name">Project Tasks(<font color=red>@Tasks.byPro(i.project.id).length</font>)</p>
+				<p id="name">Project Tasks</p>
 				<div class="taskDet"data="@routes.Application.inDetails(i.project.id)"id="bottle">
-					@for( ip <- Tasks.byPro(i.project.id)){
-					  		@if( Subtasks.findAll(ip.id).length == Subtasks.findDone(ip.id).length ){
-				<li><a value="100"href="@routes.Application.viewSubtasks(ip.id)"onmouseover="subTasks(this)"class="complete"onclick="return false;">@ip.taskName</a></li>
+					@for( ip <- Tasks.all()){
+					  	@if( ProjectAssignment.findAllSum(ip.id,i.project.id) == ProjectAssignment.findDoneSum(ip.id,i.project.id)){
+				<li><a value="@ProjectAssignment.findAllSum(ip.id,i.project.id)"href="@routes.Application.viewSubtasks(ip.id,i.project.id)"onmouseover="subTasks(this)"class="complete"onclick="return false;">@ip.taskName</a></li>
 					}else{
-				<li><a value="@(Subtasks.findDone(ip.id).length *100 / Subtasks.findAll(ip.id).length)"href="@routes.Application.viewSubtasks(ip.id)"onmouseover="subTasks(this)"onclick="return false;">@ip.taskName 
-					<label id='glingo'>@( Subtasks.findDone(ip.id).length *100 / Subtasks.findAll(ip.id).length)%</label></a></li>
+				<li><a value="@( ProjectAssignment.findDoneSum(ip.id,i.project.id) )"href="@routes.Application.viewSubtasks(ip.id,i.project.id)"onmouseover="subTasks(this)"onclick="return false;">@ip.taskName 
+					<label id='glingo'>@( ProjectAssignment.findDoneSum(ip.id,i.project.id) )%</label></a></li>
 				}
 					}
 				</div>
@@ -62,6 +99,7 @@
 
 
 	</section>
+	}
 }
 
-
+}

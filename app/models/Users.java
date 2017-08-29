@@ -48,11 +48,17 @@ public class Users extends Model {
     public static List<Users> allD(){
         return find.where().not(Expr.eq("delete_status", "1")).like("role", "Developer").findList();
     }
+    public static List<Users> allByCertain( Long id ){
+        return find.where().not(Expr.eq("delete_status", "1")).like("role", "Developer").orderBy("id='"+id+"' desc").findList();
+    }
     public static List<Users> allM(){
         return find.where().not(Expr.eq("delete_status", "1")).like("role", "Manager").findList();
     }
     public static List<Users> allU(){
         return find.where().not(Expr.eq("delete_status", "1")).like("role", "Client").findList();
+    }
+    public static List<Users> allStaff(){
+        return find.where().not(Expr.eq("delete_status", "1")).not(Expr.eq("role", "Client")).findList();
     }
     public static List<Users> allEx(String u){
         return find.where().not(Expr.eq("delete_status", "1")).not(Expr.eq("id", u)).findList();

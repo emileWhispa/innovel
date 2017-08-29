@@ -1,0 +1,33 @@
+@(dep:Tasks)
+
+
+<script>
+var form = $(".super-f");
+
+submiter( form ,function(data){
+	hip( $(".updateBox") );
+	$(".active").click();
+});
+
+</script>
+<div class="super-form">
+
+	<form action="@routes.Application.updateTask()"method="POST"class="super-f"enctype="multipart/form-data">
+<input type="hidden"value="@dep.id"name="id">
+<div class="super-group">
+	<label class='super-label'>Change task name</label>
+	<input value="@dep.taskName"type="text"class="super-input"name="name">
+</div>
+
+<div class="super-group">
+	<label class='super-label'>Change task marks</label>
+	<input type="float"class="super-input"name="details"value="@dep.complete"/>
+</div>
+
+<div class="super-group">
+<button type="submit"class="super-button">Update</button>
+</div>
+
+</form>
+
+</div>

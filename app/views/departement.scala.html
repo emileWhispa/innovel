@@ -28,16 +28,17 @@ submiter( form ,function(res){
 	 <div class="form-group">
       	<span></span>
         <input type="text" class="form-input" name="depart"  id="F_Text"/>
-        <label for="F_Text" class="animated-label">Enter Department</label>
+        <label for="F_Text" class="animated-label">Enter Category name</label>
       </div>
 <br/>
 	 <div class="form-group">
       	<span></span>
-        <input type="text" class="form-input" name="details"  id="P_Text"/>
+        <textarea class="form-input" name="details"  id="P_Text">
+        </textarea>
         <label for="P_Text" class="animated-label">Enter Detail</label>
       </div>
       <a href="#"id="forgot"onclick="this.querySelector('input').click()">
-      	<input type="file"name="photo"style="display:none;"onchange="change(this);">Add Department Logo?
+      	<input type="file"name="photo"style="display:none;"onchange="change(this);">Add Category Logo?
       	<span id="small"></span>
       </a>
       <div id="buttonHandle">
@@ -59,8 +60,7 @@ submiter( form ,function(res){
 <table>
 
 <thead>
-<td>id</td>
-<td>Category Logo</td>
+<td>Logo</td>
 <td>Category name</td>
 <td>Category Details</td>
 <td>Delete</td>
@@ -74,7 +74,6 @@ submiter( form ,function(res){
 
 @for( i <- Department.all()){
 	<tr>
-		<td>@x</td>
 		<td><span id="myImage"><img src="assets/upload/@i.departmentLogo"></span></td>
 		<td>@i.departmentName</td>
 		<td><div>@i.departmentDetails</div></td>

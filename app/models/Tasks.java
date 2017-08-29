@@ -18,22 +18,14 @@ public class Tasks extends Model {
 	public String taskName = "";
 	public int complete;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-    public Users owner;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Projects proj;
     public String deleteStatus = "";
 
     public static Model.Finder<Long, Tasks> find = new Model.Finder<Long, Tasks>(Long.class, Tasks.class);
     public static List<Tasks> all(){
         return find.where().not(Expr.eq("delete_status", "1")).findList();
     }
-    public static List<Tasks> finderByFk( Long id ){
-        return find.where().like("owner",String.valueOf(id)).findList();
-    }
-    public static List<Tasks> byPro( Long id ){
-        return find.where().like("proj",String.valueOf(id)).findList();
+    public static List<Tasks> allByCertain(Long id){
+        return find.where().not(Expr.eq("delete_status", "1")).orderBy("id='"+id+"' desc").findList();
     }
     public static Tasks finderById(long id){
         return find.ref(id);

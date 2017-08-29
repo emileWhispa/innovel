@@ -22,12 +22,13 @@ public class Details extends Model {
 
 	@ManyToOne(cascade = CascadeType.ALL)
     public Projects project;
+    
     public static Model.Finder<Long, Details> find = new Model.Finder<Long, Details>(Long.class, Details.class);
     public static List<Details> all(){
         return find.where().not(Expr.eq("delete_status", "1")).findList();
     }
     public static List<Details> finderByFk( Long id ){
-        return find.where().like("project",String.valueOf(id)).findList();
+        return find.where().like("project",String.valueOf(id)).not(Expr.eq("delete_status", "1")).findList();
     }
     public static Details finderById(long id){
         return find.ref(id);

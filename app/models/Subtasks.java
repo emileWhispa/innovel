@@ -17,7 +17,7 @@ public class Subtasks extends Model {
 	public Long id;
 	public String subName = "";
 
-	public String subDetail = "";
+	public Double subMarks;
     public int complete = 0;
 	public String deleteStatus = "";
 

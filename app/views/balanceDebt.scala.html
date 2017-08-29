@@ -1,0 +1,39 @@
+
+<div id="table">
+
+<div id="tableHeader">General Debit report</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>total debt received</td>
+<td>total debt covered</td>
+<td> Balance </td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 0;var p = 0;
+
+
+	<tr>
+    <td>@Cashin.asString(Debts.total())</td>
+    <td>@Cashin.asString(Covered.total())</td>
+    <td>@Cashin.asString(Debts.total()-Covered.total())</td>
+  </tr>
+
+
+<tr class="total">
+<td colspan="3"style="text-align:right !important;"><button class="button">Print</button></td>
+</tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

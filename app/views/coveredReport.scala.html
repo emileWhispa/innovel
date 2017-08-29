@@ -1,0 +1,66 @@
+
+<div id="table">
+
+<div id="tableHeader">Covered Debts</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>To</td>
+<td>Debt Amount</td>
+<td>Covered</td>
+<td>Rest</td>
+<td>Date</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 0;var p = 0;var xp = 0;
+
+@for( ip <- Debts.all() ){
+
+@( x = 0 )
+
+@( p = 0 )
+
+
+@for( i <- Covered.finderByFk(ip.id) ){
+
+@( xp += i.amount )
+
+
+<tr>
+	<td>@i.debt.fromu</td>
+	<td>@if( x == 0 ){@Cashin.asString(i.debt.amount)}else{@Cashin.asString(p)}</td>
+  @if( x == 0 ){
+  @( p = i.debt.amount - i.amount )
+}else{
+  @( p = p - i.amount )
+}
+	<td>@Cashin.asString(i.amount)</td>
+<td><b>@Cashin.asString(p)</b></td>
+<td>@i.date</td>
+</tr>
+
+@(x = x + 1)
+}
+
+}
+
+<tr class="total">
+<td><b>TOTAL</b></td>
+<td><b>@xp</b></td>
+<td colspan="3"style="text-align:right !important;"><button class="button">Print</button></td>
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

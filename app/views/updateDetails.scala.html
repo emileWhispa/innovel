@@ -1,0 +1,31 @@
+@(det:Details)
+
+
+<script>
+var form = $(".super-f");
+
+submiter( form ,function(data){
+	hip( $(".updateBox") );
+	$(".active").click();
+});
+
+</script>
+<div class="super-form">
+
+	<form action="@routes.Application.updateDetails()"method="POST"class="super-f"enctype="multipart/form-data">
+<input type="hidden"value="@det.id"name="id">
+<div class="super-group">
+	<textarea type="text"class="super-input"name="details"style="height:70px;">
+		@det.content
+	</textarea>
+</div>
+
+<div class="super-group"id="forgot"style="margin:17px 0 17px 0;">
+</div>
+<div class="super-group">
+<button type="submit"class="super-button">Update</button>
+</div>
+
+</form>
+
+</div>

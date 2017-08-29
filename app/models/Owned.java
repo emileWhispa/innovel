@@ -30,7 +30,7 @@ public class Owned extends Model {
         return find.where().not(Expr.eq("deleteStatus", "1")).findList();
     }
     public static List<Owned> finderByFk( Long id ){
-        return find.where().like("owner",String.valueOf(id)).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).like("owner",String.valueOf(id)).findList();
     }
     public static Owned finderById(long id){
         return find.ref(id);

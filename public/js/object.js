@@ -247,6 +247,17 @@ function change(elem){
         
 }
 
+function mark ( button ) {
+    act.sendRequest({page:button.value,m:"GET",o:button});
+}
+function source( pic ){
+    var img = document.createElement("img");
+    ( pic == "" ) ? url = "assets/images/boys.jpg" : url = "assets/upload/"+pic;
+    img.src = url;
+    img.ondragstart = function(){return false}
+    return img;
+}
+
 function contact ( res , id ) {
     obj.dataB().innerHTML = "";
     var elem = JSON.parse( res );
@@ -254,14 +265,22 @@ function contact ( res , id ) {
     Array.prototype.forEach.call(elem,function(v){
         var li = document.createElement("li");
         var aL = document.createElement("a");
-        aL.textContent = v.username + " "+v.firstName;
+        var xL = document.createElement("label");
+        xL.textContent = v.username + " "+v.firstName;
+        var span = document.createElement("span");
+        span.id = "photo-wrapper";
+        var profile = source(v.photo);
         aL.onclick = function(){ obj.prepareUser( this , data , v );return false};
         ( id == v.id ) ? aL.click() : 1;
         aL.href = id;
+        span.appendChild( profile );
+        aL.appendChild( span );
+        aL.appendChild( xL );
         li.appendChild( aL );
         data.u.appendChild( li );
     });
     var differ = document.createElement("div");
+    differ.style.color = "#ec871e";
     differ.textContent = "Group Conversations";
     differ.id = "differ";
     data.u.appendChild( differ );
@@ -270,10 +289,17 @@ function contact ( res , id ) {
         Array.prototype.forEach.call(obc,function(v){
             var li = document.createElement("li");
             var aL = document.createElement("a");
-            aL.textContent = v.forum.forumName;
+            var xL = document.createElement("label");
+            xL.textContent = v.forum.forumName;
+            var span = document.createElement("span");
+            span.id = "photo-wrapper";
+            var profile = source("");
             aL.onclick = function(){ obj.prepareUser( this , data , v , 1 );return false};
             //( id == v.id ) ? aL.click() : 1;
             aL.href = id;
+            span.appendChild( profile );
+            aL.appendChild( span );
+            aL.appendChild( xL );
             li.appendChild( aL );
             data.u.appendChild( li );
     });
@@ -283,10 +309,8 @@ function contact ( res , id ) {
 function submiter ( form , dynamic ) {
     form.onsubmit = function(e){
     e.preventDefault();
-    var username = this.querySelector("#F_Text");
-    var password = this.querySelector("#P_Text");
     var valid = true;
-    var allInput = form.querySelectorAll(".form-input");
+    var allInput = form.querySelectorAll(".form-input,.super-input,.checking");
     Array.prototype.forEach.call( allInput , function(el){
         valid = valid && act.checkLength( el , 1 , 2000 , "");
     });
@@ -302,14 +326,54 @@ function submiter ( form , dynamic ) {
 }
 }
 
+function submit2 ( form , dynamic ) {
+    var ao = form.querySelectorAll(".checkbox");
+    for (var i = 0; i < ao.length; i++) {
+        ao[i].onchange = function(){
+            var eli = this.parentNode.querySelector("select");
+            if( this.checked ){
+               eli.disabled = null;
+            }else{
+                eli.disabled = "1";
+            }
+        }
+    };
+    form.onsubmit = function(e){
+    //e.preventDefault();
+    var valid = true;
+    var allInput = form.querySelectorAll(".checking");
+    var vax = false;
+    Array.prototype.forEach.call( allInput , function(el){
+        if( el.type == "checkbox" && el.checked ){
+        valid = valid && act.checkLength( el.parentNode.querySelector("select") , 1 , 2000 , "");
+        vax = true;
+        }
+    });
+    if(valid) {
+        if( !vax ){
+            alert("choose at least one subtask");
+            return;
+        }
+        show( $(".showbox") );
+        sendFile(this.action,this,"",function(result){
+            hide( $(".showbox") );
+           // if( result === "ok" )
+                //window.location.reload();
+            if( typeof dynamic === "function" ) dynamic( result , allInput );
+        });
+    }
+    return valid;
+}
+}
+
 function blurer ( allInput ) {
     
 for (var i = 0; i < allInput.length; i++) {
     allInput[i].autocomplete = "off";
     allInput[i].onblur = function (e) {
         var par = this.parentNode;
-        var label= par.querySelector(".animated-label");
-        if(this.value) label.className += ' ' + "not-empty";
+        var label = par.querySelector(".animated-label");
+        if(this.value.length>0) label.className += ' ' + "not-empty";
         else label.classList.remove("not-empty");
     }
 }
@@ -381,7 +445,7 @@ function sendFile( page , form , output , messenger , append ) {
             }
             if ( messenger != undefined ) messenger(xhr.responseText);
 
-            //form.reset();
+            form.reset();
         }
     }
 
@@ -440,28 +504,31 @@ var act = {
         var aL = document.createElement("a");
         aL.id = "ha";
         aL.href = "/view/indetails/"+elm.id;
-        aL.onclick = function(){ return act.data(this) }
         aL.textContent = elm.projectName;
         var div = document.createElement("div");
         var img = document.createElement("img");
         img.src = "/assets/upload/"+elm.projectLogo;
         var ls = document.createElement("a");
-        ls.textContent = "Demo Link";
-        ls.id = "label_Demo";
+        ls.textContent = elm.projectDetails;
+        ls.id = "labeler";
         ls.href = elm.projectLink;
         ls.target = "_blank";
         var sp = document.createElement("button");
-        sp.value = "contact/developer/"+elm.developer.id;
+        sp.value = "view/myPro/14/var?var="+elm.id;
         sp.id = "miner";
         sp.className = "button";
-        sp.textContent = "Contact Developer";
+        sp.textContent = "Read More";
         sp.onclick = function(e){
-            act.sendRequest({page:this.value,m:"GET"},1,2,function(res){
+            act.sendRequest({page:this.value,m:"GET",o:$(".modal-inner")},1,2,function(res){
                 if( res == "ok" ) $("#santa").click();
-                else contact( res , elm.developer.id );
+                else{
+                    show( $(".modal-2") );
+                    $(".modal-inner").style.backgroundImage = "none";
+                }
             });
             return false;}
 
+        aL.onclick = function(){ sp.click();return false; }
         div.appendChild( img );
         par.appendChild( aL );
         par.appendChild( div );
@@ -582,7 +649,7 @@ var act = {
         return document.defaultView.getComputedStyle(elem,null).getPropertyValue( prop );
     },
     checkLength:function( o , min , max , title ){
-        if ( o.value.length < min || o.value.length > max ) {
+        if ( (o.value.length < min || o.value.length > max) || (o.type == "checkbox" && !o.checked ) ) {
             //document.querySelector(pos).innerHTML = title;
             o.focus();
            // this.updateTips( o , title );

@@ -33,29 +33,7 @@ submiter( form ,function(res){
 	 <div class="form-group">
       	<span></span>
         <input type="number" class="form-input" name="complete"  id="T_Text"/>
-        <label for="T_Text" class="animated-label">Enter Task Completion(%)</label>
-      </div>
-<br/>
-	 <div class="form-group">
-      	<span></span>
-        <select class="form-input" name="owner"  id="P_Text"/>
-        	<option value=""></option>
-        	@for( p <- Users.allD() ){
-        		<option value="@p.id">@p.username</option>
-        	}
-    	</select>
-        <label for="P_Text" class="animated-label">Enter Task Owner</label>
-      </div>
-      <br/>
-	 <div class="form-group">
-      	<span></span>
-        <select class="form-input" name="project"  id="Dep_Text">
-        	<option value=""></option>
-        	@for( p <- Projects.all() ){
-        		<option value="@p.id">@p.projectName</option>
-        	}
-        </select>
-        <label for="Dep_Text" class="animated-label">Project Select</label>
+        <label for="T_Text" class="animated-label">Enter Task Marks(%)</label>
       </div>
       <br/>
       <div id="buttonHandle">
@@ -77,11 +55,8 @@ submiter( form ,function(res){
 <table>
 
 <thead>
-<td>id</td>
 <td>Task Name</td>
-<td>Task Owner</td>
-<td>Complete Level</td>
-<td>Project's Task</td>
+<td>Task Marks</td>
 <td>Delete</td>
 <td>Update</td>
 </thead>
@@ -90,13 +65,10 @@ submiter( form ,function(res){
 
 @for( i <- Tasks.all()){
 	<tr>
-		<td>@i.id</td>
 		<td>@i.taskName</td>
-		<td>@i.owner.username</td>
 		<td>@i.complete%</td>
-		<td>@i.proj.projectName</td>
 		<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"tasks")"></button></td>
-		<td><button id="update"></button></td>
+		<td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"tasks")"></button></td>
 	</tr>
 }
 

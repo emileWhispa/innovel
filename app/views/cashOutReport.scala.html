@@ -1,0 +1,49 @@
+
+<div id="table">
+
+<div id="tableHeader">Cash out</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>to</td>
+<td>Amount</td>
+<td>Motif</td>
+<td>Approved by</td>
+<td>Date</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 0;var p = 0;
+
+
+@for( i <- Cashout.all()){
+
+@( x += i.amount )
+
+	<tr>
+    <td>@i.sendto</td>
+    <td>@Cashin.asString(i.amount)</td>
+    <td>@i.motif</td>
+    <td>@i.doneby.username @i.doneby.firstName</td>
+    <td>@i.date</td>
+  </tr>
+}
+
+<tr class="total">
+<td><b>TOTAL</b></td>
+<td><b>@x</b></td>
+<td colspan="3"style="text-align:right !important;"><button class="button">Print</button></td>
+</tr>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

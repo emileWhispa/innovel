@@ -1,3 +1,4 @@
+@(data:String)
 
 <style>
 
@@ -18,7 +19,11 @@ submiter( form ,function(res){
 });
 </script>
 <div align="left"style="position:relative;z-index:5;">
-	<button class="button"id="batme"> <add>+</add> Add New Project</button>
+    @if( data == "private" ){
+	   <button class="button"id="batme"> <add>+</add> Add New Private Project</button>
+    }else{
+      <button class="button"id="batme"> <add>+</add> Add New Public Project</button>
+    }
 
 	<div id="madona">
 	<form class="loginForm"method="POST"action="@routes.Application.regPro()"id="formA"enctype="multipart/form-data">
@@ -58,8 +63,19 @@ submiter( form ,function(res){
         <input type="text" class="form-input" name="link"  id="De_Text"/>
         <label for="De_Text" class="animated-label">Project Demo Links</label>
       </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <textarea class="form-input" name="details"  id="DeT_Text">
+        </textarea>
+        <label for="DeT_Text" class="animated-label">Project Details</label>
+      </div>
       <br>
-          <label style="display:block;"><input type="checkbox" value="1"name="done">[Developed]</label>
+      @if( data == "private" ){
+        <input type="hidden"value="0"name="done">
+      }else{
+        <input type="hidden"value="1"name="done">
+      }
       <a href="#"id="forgot"onclick="this.querySelector('input').click()">
       	<input type="file"name="photo"style="display:none;"onchange="change(this);"/>Add Project Icon?
       	<span id="small"></span>
@@ -76,35 +92,37 @@ submiter( form ,function(res){
 
 <div id="table">
 
-<div id="tableHeader">List of All Available Projects and their Departments</div>
+<div id="tableHeader">List of All Available Projects and their Categories</div>
 
 <div id="tableContent">
 
 <table>
 
 <thead>
-<td>id</td>
 <td>Project Logo</td>
 <td>Project Name</td>
 <td>Project Developer</td>
-<td>Project Department</td>
+<td>Project Category</td>
+<td>Project Details</td>
 <td>Demo Link</td>
 <td>Delete</td>
 <td>Update</td>
+<td>Assign subTasks</td>
 </thead>
 
 <tbody>
 
-@for( i <- Projects.all()){
+@for( i <- Projects.allC(data)){
 	<tr>
-		<td>@i.id</td>
     <td><span id="myImage"><img src="assets/upload/@i.projectLogo"></span></td>
 		<td>@i.projectName</td>
 		<td>@i.developer.username</td>
 		<td>@i.depart.departmentName</td>
+    <td>@i.projectDetails</td>
 		<td>@i.projectLink</td>
 		<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"proj")"></button></td>
-		<td><button id="update"></button></td>
+		<td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"pro")"></button></td>
+    <td><button id="update"onclick="update(this);"value="@routes.Application.update(i.id,"assign")"></button></td>
 	</tr>
 }
 

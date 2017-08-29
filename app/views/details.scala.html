@@ -25,13 +25,8 @@ submiter( form ,function(res){
   <br/>
    <div class="form-group">
         <span></span>
-        <input type="text" class="form-input" name="names"  id="F_Text"/>
-        <label for="F_Text" class="animated-label">Enter Detail name</label>
-      </div>
-<br/>
-   <div class="form-group">
-        <span></span>
-        <input type="text" class="form-input" name="content"  id="P_Text"/>
+        <textarea class="form-input" name="content"  id="P_Text">
+        </textarea>
         <label for="P_Text" class="animated-label">Enter Detail Content</label>
       </div>
       <br/>
@@ -64,7 +59,6 @@ submiter( form ,function(res){
 <table>
 
 <thead>
-<td>id</td>
 <td>Detail name</td>
 <td>Detail Content</td>
 <td>Project'Detail</td>
@@ -76,12 +70,11 @@ submiter( form ,function(res){
 
 @for( i <- Details.all()){
   <tr>
-    <td>@i.id</td>
     <td>@i.name</td>
     <td><div>@i.content</div></td>
     <td>@i.project.projectName</td>
     <td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"det")"></button></td>
-    <td><button id="update"></button></td>
+    <td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"det")"></button></td>
   </tr>
 }
 

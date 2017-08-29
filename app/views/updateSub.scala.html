@@ -1,0 +1,42 @@
+@(dep:Subtasks)
+
+
+<script>
+var form = $(".super-f");
+
+submiter( form ,function(data){
+	hip( $(".updateBox") );
+	$(".active").click();
+});
+
+</script>
+<div class="super-form">
+
+	<form action="@routes.Application.updateSub()"method="POST"class="super-f"enctype="multipart/form-data">
+<input type="hidden"value="@dep.id"name="id">
+<div class="super-group">
+	<label class='super-label'>Change sub task name</label>
+	<input value="@dep.subName"type="text"class="super-input"name="name">
+</div>
+
+<div class="super-group">
+	<label class='super-label'>Change sub task marks</label>
+	<input type="float"class="super-input"name="details"value="@dep.subMarks"/>
+</div>
+
+<div class="super-group">
+	<label class='super-label'>Change task of this subtask</label>
+	<select class="super-input"name="task">
+		@for( i <- Tasks.allByCertain(dep.task.id)){
+		<option value="@i.id">@i.taskName</option>
+	}
+	</select>
+</div>
+
+<div class="super-group">
+<button type="submit"class="super-button">Update</button>
+</div>
+
+</form>
+
+</div>

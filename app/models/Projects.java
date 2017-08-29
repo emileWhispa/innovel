@@ -22,6 +22,7 @@ public class Projects extends Model {
 
 	public String projectLink = "";
 	public String projectLogo = "";
+    public String projectDetails = "";
 	public String deleteStatus = "";
     public int done = 0;
 
@@ -32,14 +33,27 @@ public class Projects extends Model {
     public static List<Projects> all(){
         return find.where().not(Expr.eq("delete_status", "1")).orderBy("id desc").findList();
     }
+    public static List<Projects> allC(String c){
+        String d = "0";
+        if( c.equals("private") ){
+            d = "0";
+        }else{
+            d = "1";
+        }
+
+        return find.where().not(Expr.eq("delete_status", "1")).like("done",d).orderBy("id desc").findList();
+    }
     public static List<Projects> allDone(){
         return find.where().not(Expr.eq("delete_status", "1")).like("done","0").findList();
     }
     public static List<Projects> finderByFk( Long id ){
-        return find.where().like("depart",String.valueOf(id)).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).like("depart",String.valueOf(id)).findList();
+    }
+    public static List<Projects> finder( String id ){
+        return find.where().not(Expr.eq("delete_status", "1")).like("id",id).findList();
     }
     public static List<Projects> finderByFkAndDone( Long id ,int dn){
-        return find.where().like("depart",String.valueOf(id)).like("done",String.valueOf(dn)).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).like("depart",String.valueOf(id)).like("done",String.valueOf(dn)).findList();
     }
     public static Projects finderById(long id){
         return find.ref(id);

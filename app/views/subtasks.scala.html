@@ -1,0 +1,110 @@
+@(user: Users)
+
+<style>
+
+</style>
+<script>
+var form = $("#formA");
+var allInput = form.querySelectorAll(".form-input");
+
+var lin = $("#batme");
+lin.onclick = function(){
+  show($("#madona"));
+}
+blurer( allInput );
+
+submiter( form ,function(re){
+  $(".active").click();
+});
+</script>
+<div align="left"style="position:relative;z-index:5;">
+  <button class="button"id="batme"> <add>+</add> Add New Sub Task</button>
+
+  <div id="madona">
+  <form class="loginForm"method="POST"action="@routes.Application.regsubTasks()"id="formA">
+  <div id="h"><h1>Add new</h1> Sub task on task</div>
+  <br/>
+   <div class="form-group">
+        <span></span>
+        <input type="text" class="form-input" name="names"  id="F_Text"/>
+        <label for="F_Text" class="animated-label">Enter sub Task name</label>
+      </div>
+<br/>
+   <div class="form-group">
+        <span></span>
+        <input type="number" class="form-input" name="content"  id="P_Text"/>
+        <label for="P_Text" class="animated-label">Enter sub Task Marks</label>
+      </div>
+      <br/>
+   <div class="form-group">
+        <span></span>
+        <select type="text" class="form-input" name="task"  id="X_Text">
+          <option value=""></option>
+          @for( i <- Tasks.all() ){
+              <option value="@i.id">@i.taskName</option>
+          }
+        </select>
+        <label for="X_Text" class="animated-label">Choose Task</label>
+      </div>
+      <div id="buttonHandle">
+        <a href="#"id="moreX"onclick="hide($('#madona'))">Close This Form!?</a><input type="submit"name="first"value="Register"id="meBut"/>
+      </div>
+
+</form>
+</div>
+
+
+</div>
+
+
+
+<div id="table">
+
+<div id="tableHeader">Subtasks and their tasks</div>
+
+<div id="tableContent">
+
+<table>
+
+<thead>
+<td>Task name</td>
+<td>Subtask</td>
+<td>Subtask marks</td>
+<td>Delete</td>
+<td>Modify</td>
+</thead>
+
+<tbody>
+
+@import scala.Predef; var x = 0;var p = 0;var xp = 0;var m=0;
+
+@for( i <- Tasks.all() ){
+
+@( x = 0 )
+
+@for( ip <- Subtasks.finderByFk( i.id ) ){
+<tr>
+  @if( x == 0 ){
+    <td rowspan="@Subtasks.finderByFk( i.id ).length">@i.taskName</td>
+    @( x = x + 1 )
+  }
+<td>@ip.subName</td>
+<td>@ip.subMarks%</td>
+<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(ip.id,"sub")"></button></td>
+<td><button id="update"onclick="update(this)"value="@routes.Application.update(ip.id,"sub")"></button></td>
+
+</tr>
+}
+
+
+}
+
+
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>

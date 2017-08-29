@@ -22,9 +22,13 @@ public class Department extends Model {
     public String departmentDetails = "";
     public String departmentLogo = "";
     public String delete_status = "";
+    public int level;
     public static Model.Finder<Long, Department> find = new Model.Finder<Long, Department>(Long.class, Department.class);
     public static List<Department> all(){
-        return find.where().not(Expr.eq("delete_status", "1")).orderBy("id desc").findList();
+        return find.where().not(Expr.eq("delete_status", "1")).orderBy("level asc").findList();
+    }
+    public static List<Department> allByCertain( Long id ){
+        return find.where().not(Expr.eq("delete_status", "1")).orderBy("id='"+id+"' desc").findList();
     }
     public static Department finderById(long id){
         return find.ref(id);

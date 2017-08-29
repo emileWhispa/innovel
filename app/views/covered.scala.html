@@ -8,7 +8,9 @@ lin.onclick = function(){
 }
 blurer( allInput );
 
-submiter( form );
+submiter( form ,function(){
+  $(".active").click();
+});
 </script>
 <div align="left"style="position:relative;z-index:5;">
   <button class="button"id="batme"> <add>+</add> Add New Debt Cover</button>
@@ -85,17 +87,22 @@ submiter( form );
 
 <tr>
 	<td>@i.debt.fromu</td>
-	<td>@if( x == 0 ){@i.debt.amount}else{@p}</td>
+	<td>@if( x == 0 ){@Cashin.asString(i.debt.amount)}else{@Cashin.asString(p)}</td>
   @if( x == 0 ){
   @( p = i.debt.amount - i.amount )
 }else{
   @( p = p - i.amount )
 }
-	<td>@i.amount</td>
-<td><b>@(p)</b></td>
+<td>@Cashin.asString(i.amount)</td>
+<td><b>@Cashin.asString(p)</b></td>
 <td>@i.date</td>
-<td>Modify</td>
-<td>Delete</td></tr>
+
+
+<td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"cover")"></button></td>
+<td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"cover")"></button></td>
+
+
+</tr>
 
 @(x = x + 1)
 }

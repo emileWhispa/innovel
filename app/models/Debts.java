@@ -33,7 +33,10 @@ public class Debts extends Model {
     public static Model.Finder<Long, Debts> find = new Model.Finder<Long, Debts>(Long.class, Debts.class);
 
     public static List<Debts> all(){
-        return find.where().not(Expr.eq("delete_status", "1")).findList();
+        return find.where().not(Expr.eq("delete_status", "1")).orderBy("id desc").findList();
+    }
+    public static List<Debts> finderByFk(Long id){
+        return find.where().not(Expr.eq("delete_status", "1")).like("id",String.valueOf(id)).orderBy("id desc").findList();
     }
     public static Debts finderById(long id){
         return find.ref(id);

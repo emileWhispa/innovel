@@ -77,8 +77,7 @@ submiter( form );
 <table>
 
 <thead>
-<td>N<sup><u>0</u></sup></td>
-<td>Sendto</td>
+<td>to</td>
 <td>Amount</td>
 <td>Motif</td>
 <td>Upload</td>
@@ -92,15 +91,15 @@ submiter( form );
 
 @for( i <- Cashout.all()){
 	<tr>
-		<td>@i.id</td>
     <td>@i.sendto</td>
-    <td>@i.amount</td>
+    <td>@Cashin.asString(i.amount)</td>
     <td>@i.motif</td>
     <td>@i.upload</td>
     <td>@i.doneby.username @i.doneby.firstName</td>
     <td>@i.date</td>
-    <td>Modify</td>
-    <td>Delete</td>
+    <td><button id="delete"onclick="deleter(this);"value="@routes.Application.delete(i.id,"cashout")"></button></td>
+    <td><button id="update"onclick="update(this)"value="@routes.Application.update(i.id,"cashout")"></button></td>
+
   </tr>
 }
 
