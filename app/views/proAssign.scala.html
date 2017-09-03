@@ -13,7 +13,7 @@ submit2( form ,function(res){
 
 <h4 class="assign-header">@pro.projectName</h4>
 
-<form method="POST"action="@routes.Application.checker()"id="formB"enctype="urlencoded/form-data">
+<form method="POST"action="@routes.Application.checker()"id="formB"enctype="application/x-www-form-urlencoded">
 		<input type="hidden"value="@pro.id"name="project">
 @for( i <- Subtasks.all() ){
 	<div class="checkList">

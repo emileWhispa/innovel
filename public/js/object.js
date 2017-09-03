@@ -355,12 +355,12 @@ function submit2 ( form , dynamic ) {
             return;
         }
         show( $(".showbox") );
-        sendFile(this.action,this,"",function(result){
+        /*sendFile(this.action,this,"",function(result){
             hide( $(".showbox") );
            // if( result === "ok" )
                 //window.location.reload();
             if( typeof dynamic === "function" ) dynamic( result , allInput );
-        });
+        });*/
     }
     return valid;
 }
