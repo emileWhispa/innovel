@@ -42,7 +42,9 @@ public class Covered extends Model {
     public static int total(){
         int num = 0;
         for( Covered i : all() ){
-            num += i.amount;
+            if( !i.debt.deleteStatus.equals("1") ){
+                num += i.amount;
+            }
         }
         return num;
     }
